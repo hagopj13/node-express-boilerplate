@@ -1,2 +1,2 @@
-# node-express-mongoose-boilerplate
-A boilerplate for building production-ready RESTful APIs using Node.js
+# RESTful API Node Server Boilerplate
+A boilerplate/starter project for quickly building production-ready RESTful APIs using Node.js, Express, and Mongoose.
