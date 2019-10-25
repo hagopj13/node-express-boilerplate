@@ -1,0 +1,8 @@
+{
+  "name": "node-express-mongoose-boilerplate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/hagopj13/node-express-mongoose-boilerplate.git",
+  "author": "Hagop Jamkojian <hagopj13@gmail.com>",
+  "license": "MIT"
+}
