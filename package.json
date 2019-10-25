@@ -1,8 +1,17 @@
 {
   "name": "node-express-mongoose-boilerplate",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/hagopj13/node-express-mongoose-boilerplate.git",
   "author": "Hagop Jamkojian <hagopj13@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
