@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "post-checkout": "npm install",
+    "pre-commit": "lint-staged",
+    "post-commit": "git status"
+  }
+}
