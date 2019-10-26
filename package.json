@@ -19,7 +19,8 @@
   "dependencies": {
     "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
