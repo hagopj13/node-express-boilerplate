@@ -1,10 +1,17 @@
 const express = require('express');
+const config = require('./config/config');
 const mongoose = require('./config/mongoose');
 const loggger = require('./config/logger');
+const morgan = require('./config/morgan');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 
 const app = express();
+
+if (config.env !== 'test') {
+  app.use(morgan.successHandler);
+  app.use(morgan.errorHandler);
+}
 
 // parse json request body
 app.use(express.json());

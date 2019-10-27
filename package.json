@@ -24,6 +24,7 @@
     "http-status": "^1.4.0",
     "lodash": "^4.17.15",
     "mongoose": "^5.7.7",
+    "morgan": "^1.9.1",
     "pm2": "^4.1.2",
     "validator": "^11.1.0",
     "winston": "^3.2.1"
