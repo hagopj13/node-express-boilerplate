@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const config = require('../config/config');
+const logger = require('../config/logger');
 const AppError = require('../utils/AppError');
 
 const errorConverter = (err, req, res, next) => {
@@ -27,6 +28,10 @@ const errorHandler = (err, req, res, next) => {
     message,
     ...(config.env === 'development' && { stack: err.stack }),
   };
+
+  if (config.env === 'development') {
+    logger.error(err);
+  }
 
   res.status(statusCode).send(response);
 };
