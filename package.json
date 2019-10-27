@@ -17,6 +17,7 @@
     "prettier:fix": "prettier --write **/*.js"
   },
   "dependencies": {
+    "@hapi/joi": "^16.1.7",
     "bcryptjs": "^2.4.3",
     "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",

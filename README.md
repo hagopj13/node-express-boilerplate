@@ -11,7 +11,8 @@ It comes with many built-in features, such as authentication using JWT, request 
 - [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)
 - Dependency management with [Yarn](https://yarnpkg.com)
 - Advanced production process management using [PM2](https://pm2.keymetrics.io)
-- Logging using [winston](https://github.com/winstonjs/winston)
+- Request data validation using [Joi](https://github.com/hapijs/joi)
+- Logging using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
 - Centralized error handling mechanism
 - Environment variables using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
 - Git hooks with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
