@@ -4,7 +4,7 @@ const mongoose = require('./config/mongoose');
 const loggger = require('./config/logger');
 const morgan = require('./config/morgan');
 const routes = require('./routes/v1');
-const { errorConverter, errorHandler } = require('./middlewares/error');
+const { unknownRouteHandler, errorConverter, errorHandler } = require('./middlewares/error');
 
 const app = express();
 
@@ -21,6 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // v1 api routes
 app.use('/v1', routes);
+
+// send back a 404 error for any unknown api request
+app.use(unknownRouteHandler);
 
 // convert error to AppError, if needed
 app.use(errorConverter);

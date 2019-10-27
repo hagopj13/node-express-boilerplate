@@ -36,7 +36,12 @@ const errorHandler = (err, req, res, next) => {
   res.status(statusCode).send(response);
 };
 
+const unknownRouteHandler = (req, res, next) => {
+  next(new AppError(httpStatus.NOT_FOUND, 'Not found'));
+};
+
 module.exports = {
   errorConverter,
   errorHandler,
+  unknownRouteHandler,
 };
