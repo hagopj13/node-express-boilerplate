@@ -21,6 +21,8 @@
     "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "http-status": "^1.4.0",
+    "lodash": "^4.17.15",
     "mongoose": "^5.7.7",
     "pm2": "^4.1.2",
     "validator": "^11.1.0",
