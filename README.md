@@ -12,6 +12,7 @@ It comes with many built-in features, such as authentication using JWT, request 
 - Dependency management with [Yarn](https://yarnpkg.com)
 - Advanced production process management using [PM2](https://pm2.keymetrics.io)
 - Logging using [winston](https://github.com/winstonjs/winston)
+- Centralized error handling mechanism
 - Environment variables using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
 - Git hooks with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
 - Linting with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
