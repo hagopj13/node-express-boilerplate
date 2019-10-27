@@ -7,6 +7,7 @@
     "ecmaVersion": 2018
   },
   "rules": {
-    "no-console": "error"
+    "no-console": "error",
+    "func-names": "off"
   }
 }
