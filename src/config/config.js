@@ -8,4 +8,5 @@ dotenv.config({
 module.exports = {
   env: process.env.NODE_ENV,
   port: process.env.PORT,
+  mongodbUrl: process.env.MONGODB_URL,
 };
