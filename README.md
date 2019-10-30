@@ -9,9 +9,10 @@ It comes with many built-in features, such as authentication using JWT, request 
 - Latest ECMAScript features
 - [Express](http://expressjs.com)
 - [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)
-- Dependency management with [Yarn](https://yarnpkg.com)
-- Advanced production process management using [PM2](https://pm2.keymetrics.io)
+- Authentication using [passport](http://www.passportjs.org)
 - Request data validation using [Joi](https://github.com/hapijs/joi)
+- Advanced production process management using [PM2](https://pm2.keymetrics.io)
+- Dependency management with [Yarn](https://yarnpkg.com)
 - Logging using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
 - Centralized error handling mechanism
 - Environment variables using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)

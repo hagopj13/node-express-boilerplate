@@ -1,8 +1,10 @@
 const express = require('express');
+const passport = require('passport');
 const config = require('./config/config');
 const mongoose = require('./config/mongoose');
 const loggger = require('./config/logger');
 const morgan = require('./config/morgan');
+const { jwtStrategy } = require('./config/passport');
 const routes = require('./routes/v1');
 const { unknownRouteHandler, errorConverter, errorHandler } = require('./middlewares/error');
 
@@ -18,6 +20,10 @@ app.use(express.json());
 
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
+
+// jwt authentication
+app.use(passport.initialize());
+passport.use('jwt', jwtStrategy);
 
 // v1 api routes
 app.use('/v1', routes);

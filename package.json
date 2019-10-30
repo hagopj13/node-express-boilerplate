@@ -28,6 +28,8 @@
     "moment": "^2.24.0",
     "mongoose": "^5.7.7",
     "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
     "pm2": "^4.1.2",
     "validator": "^11.1.0",
     "winston": "^3.2.1"
