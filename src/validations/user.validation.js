@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 const validationUtils = require('../utils/validation.util');
 
-const register = {
+const createUser = {
   body: Joi.object().keys({
     email: Joi.string()
       .required()
@@ -10,9 +10,12 @@ const register = {
       .required()
       .custom(validationUtils.validatePassword),
     name: Joi.string().required(),
+    role: Joi.string()
+      .required()
+      .valid('user', 'admin'),
   }),
 };
 
 module.exports = {
-  register,
+  createUser,
 };
