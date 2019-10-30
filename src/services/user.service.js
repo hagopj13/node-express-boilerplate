@@ -15,6 +15,15 @@ const createUser = async userBody => {
   return user;
 };
 
+const getUserByEmail = async email => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No user found with this email');
+  }
+  return user;
+};
+
 module.exports = {
   createUser,
+  getUserByEmail,
 };

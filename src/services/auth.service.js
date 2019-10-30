@@ -1,6 +1,10 @@
 const moment = require('moment');
+const bcrypt = require('bcryptjs');
+const httpStatus = require('http-status');
 const config = require('../config/config');
 const tokenService = require('./token.service');
+const userService = require('./user.service');
+const AppError = require('../utils/AppError');
 
 const generateAuthTokens = async userId => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
@@ -22,6 +26,24 @@ const generateAuthTokens = async userId => {
   };
 };
 
+const checkPassword = async (password, correctPassword) => {
+  const isPasswordMatch = await bcrypt.compare(password, correctPassword);
+  if (!isPasswordMatch) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Passwords do not match');
+  }
+};
+
+const loginUser = async (email, password) => {
+  try {
+    const user = await userService.getUserByEmail(email);
+    await checkPassword(password, user.password);
+    return user;
+  } catch (error) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+  }
+};
+
 module.exports = {
   generateAuthTokens,
+  loginUser,
 };
