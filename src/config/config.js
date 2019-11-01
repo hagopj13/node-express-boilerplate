@@ -8,7 +8,7 @@ dotenv.config({
 module.exports = {
   env: process.env.NODE_ENV,
   port: process.env.PORT,
-  mongodbUrl: process.env.MONGODB_URL,
+  mongodbUrl: process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URL : process.env.MONGODB_URL,
   jwt: {
     secret: process.env.JWT_SECRET,
     accessExpirationMinutes: parseInt(process.env.JWT_ACCESS_EXPIRATION_MINUTES, 10),
