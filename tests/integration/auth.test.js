@@ -10,13 +10,16 @@ setupDatabase();
 
 describe('Auth route', () => {
   describe('POST /v1/auth/register', () => {
-    test('should return 201 and successfully register user if request data is ok', async () => {
-      const newUser = {
+    let newUser;
+    beforeEach(() => {
+      newUser = {
         name: faker.name.findName(),
         email: faker.internet.email().toLowerCase(),
         password: 'password1',
       };
+    });
 
+    test('should return 201 and successfully register user if request data is ok', async () => {
       const res = await request(app)
         .post('/v1/auth/register')
         .send(newUser)
@@ -36,24 +39,8 @@ describe('Auth route', () => {
       });
     });
 
-    test('should return 400 error if email is missing', async () => {
-      const newUser = {
-        name: faker.name.findName(),
-        password: 'password1',
-      };
-
-      await request(app)
-        .post('/v1/auth/register')
-        .send(newUser)
-        .expect(httpStatus.BAD_REQUEST);
-    });
-
     test('should return 400 error if email is invalid', async () => {
-      const newUser = {
-        name: faker.name.findName(),
-        email: 'invalidEmail',
-        password: 'password1',
-      };
+      newUser.email = 'invalidEmail';
 
       await request(app)
         .post('/v1/auth/register')
@@ -63,23 +50,7 @@ describe('Auth route', () => {
 
     test('should return 400 error if email is already used', async () => {
       await insertUsers([userOne]);
-      const newUser = {
-        name: faker.name.findName(),
-        email: userOne.email,
-        password: 'password1',
-      };
-
-      await request(app)
-        .post('/v1/auth/register')
-        .send(newUser)
-        .expect(httpStatus.BAD_REQUEST);
-    });
-
-    test('should return 400 error if password is missing', async () => {
-      const newUser = {
-        name: faker.name.findName(),
-        email: faker.internet.email().toLowerCase(),
-      };
+      newUser.email = userOne.email;
 
       await request(app)
         .post('/v1/auth/register')
@@ -88,11 +59,7 @@ describe('Auth route', () => {
     });
 
     test('should return 400 error if password length is less than 8 characters', async () => {
-      const newUser = {
-        name: faker.name.findName(),
-        email: faker.internet.email().toLowerCase(),
-        password: 'passwo1',
-      };
+      newUser.password = 'passwo1';
 
       await request(app)
         .post('/v1/auth/register')
@@ -101,11 +68,7 @@ describe('Auth route', () => {
     });
 
     test('should return 400 error if password does not contain both letters and numbers', async () => {
-      const newUser = {
-        name: faker.name.findName(),
-        email: faker.internet.email().toLowerCase(),
-        password: 'password',
-      };
+      newUser.password = 'password';
 
       await request(app)
         .post('/v1/auth/register')
@@ -113,18 +76,6 @@ describe('Auth route', () => {
         .expect(httpStatus.BAD_REQUEST);
 
       newUser.password = '11111111';
-
-      await request(app)
-        .post('/v1/auth/register')
-        .send(newUser)
-        .expect(httpStatus.BAD_REQUEST);
-    });
-
-    test('should return 400 error if name is missing', async () => {
-      const newUser = {
-        email: faker.internet.email().toLowerCase(),
-        password: 'password1',
-      };
 
       await request(app)
         .post('/v1/auth/register')
@@ -157,30 +108,6 @@ describe('Auth route', () => {
         access: { token: expect.anything(), expires: expect.anything() },
         refresh: { token: expect.anything(), expires: expect.anything() },
       });
-    });
-
-    test('should return 400 error if email is missing', async () => {
-      await insertUsers([userOne]);
-      const loginCredentials = {
-        password: userOne.password,
-      };
-
-      await request(app)
-        .post('/v1/auth/login')
-        .send(loginCredentials)
-        .expect(httpStatus.BAD_REQUEST);
-    });
-
-    test('should return 400 error if password is missing', async () => {
-      await insertUsers([userOne]);
-      const loginCredentials = {
-        email: userOne.email,
-      };
-
-      await request(app)
-        .post('/v1/auth/login')
-        .send(loginCredentials)
-        .expect(httpStatus.BAD_REQUEST);
     });
 
     test('should return 401 error if there are no users with that email', async () => {

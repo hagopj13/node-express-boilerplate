@@ -5,12 +5,12 @@ const tokenService = require('../../src/services/token.service');
 const { userOne, admin } = require('./user.fixture');
 
 const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-const userOneAccessToken = tokenService.generateToken(userOne.id, accessTokenExpires);
-const adminAccessToken = tokenService.generateToken(admin.id, accessTokenExpires);
+const userOneAccessToken = tokenService.generateToken(userOne._id, accessTokenExpires);
+const adminAccessToken = tokenService.generateToken(admin._id, accessTokenExpires);
 
 const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
 const userOneRefreshTokenDoc = {
-  token: tokenService.generateToken(userOne.id, refreshTokenExpires),
+  token: tokenService.generateToken(userOne._id, refreshTokenExpires),
   user: userOne._id,
   type: 'refresh',
   expires: refreshTokenExpires.toDate(),
