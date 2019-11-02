@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const faker = require('faker');
 const User = require('../../src/models/user.model');
 
 const password = 'password1';
@@ -8,24 +9,24 @@ const hashedPassword = bcrypt.hashSync(password, salt);
 
 const userOne = {
   _id: mongoose.Types.ObjectId(),
-  name: 'User One',
-  email: 'user1@example.com',
+  name: faker.name.findName(),
+  email: faker.internet.email().toLowerCase(),
   password,
   role: 'user',
 };
 
 const userTwo = {
   _id: mongoose.Types.ObjectId(),
-  name: 'User Two',
-  email: 'user2@example.com',
+  name: faker.name.findName(),
+  email: faker.internet.email().toLowerCase(),
   password,
   role: 'user',
 };
 
 const admin = {
   _id: mongoose.Types.ObjectId(),
-  name: 'Admin',
-  email: 'admin@example.com',
+  name: faker.name.findName(),
+  email: faker.internet.email().toLowerCase(),
   password,
   role: 'admin',
 };

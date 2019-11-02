@@ -11,6 +11,7 @@
     "no-console": "error",
     "func-names": "off",
     "no-underscore-dangle": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "jest/expect-expect": "off"
   }
 }
