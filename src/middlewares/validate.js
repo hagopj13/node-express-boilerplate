@@ -5,8 +5,10 @@ const AppError = require('../utils/AppError');
 
 const validate = schema => (req, res, next) => {
   const validSchema = pick(schema, ['params', 'query', 'body']);
-  const toValidate = pick(req, Object.keys(validSchema));
-  const { value, error } = Joi.compile(validSchema).validate(toValidate, { abortEarly: true });
+  const object = pick(req, Object.keys(validSchema));
+  const { value, error } = Joi.compile(validSchema)
+    .prefs({ errors: { label: 'key' } })
+    .validate(object);
 
   if (error) {
     const errorMessage = error.details.map(details => details.message).join(', ');
