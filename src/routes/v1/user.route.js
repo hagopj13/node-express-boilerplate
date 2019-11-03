@@ -8,4 +8,6 @@ const router = express.Router();
 
 router.route('/').post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser);
 
+router.route('/:userId').patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser);
+
 module.exports = router;

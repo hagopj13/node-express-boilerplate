@@ -15,6 +15,14 @@ const createUser = async userBody => {
   return user;
 };
 
+const getUserById = async userId => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user;
+};
+
 const getUserByEmail = async email => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -23,7 +31,21 @@ const getUserByEmail = async email => {
   return user;
 };
 
+const updateUser = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+  if (updateBody.email) {
+    await checkDuplicateEmail(updateBody.email, userId);
+  }
+  Object.keys(updateBody).forEach(update => {
+    user[update] = updateBody[update];
+  });
+  await user.save();
+  return user;
+};
+
 module.exports = {
   createUser,
+  updateUser,
+  getUserById,
   getUserByEmail,
 };

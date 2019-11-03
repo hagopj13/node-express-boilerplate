@@ -8,6 +8,12 @@ const createUser = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(response);
 });
 
+const updateUser = catchAsync(async (req, res) => {
+  const user = await userService.updateUser(req.params.userId, req.body);
+  res.send(user.transform());
+});
+
 module.exports = {
   createUser,
+  updateUser,
 };
