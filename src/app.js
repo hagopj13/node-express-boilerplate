@@ -1,10 +1,12 @@
 const express = require('express');
 const passport = require('passport');
+const httpStatus = require('http-status');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const routes = require('./routes/v1');
-const { unknownRouteHandler, errorConverter, errorHandler } = require('./middlewares/error');
+const { errorConverter, errorHandler } = require('./middlewares/error');
+const AppError = require('./utils/AppError');
 
 const app = express();
 
@@ -27,7 +29,9 @@ passport.use('jwt', jwtStrategy);
 app.use('/v1', routes);
 
 // send back a 404 error for any unknown api request
-app.use(unknownRouteHandler);
+app.use((req, res, next) => {
+  next(new AppError(httpStatus.NOT_FOUND, 'Not found'));
+});
 
 // convert error to AppError, if needed
 app.use(errorConverter);
