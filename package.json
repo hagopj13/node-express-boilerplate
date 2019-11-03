@@ -12,7 +12,7 @@
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "test": "jest -i",
-    "test:watch": "jest -i --watchAll",
+    "test:watch": "jest -i --verbose --watchAll",
     "coverage": "jest -i --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
