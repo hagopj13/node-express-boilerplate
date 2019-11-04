@@ -43,7 +43,20 @@ const loginUser = async (email, password) => {
   }
 };
 
+const refreshAuthTokens = async refreshToken => {
+  try {
+    const refreshTokenDoc = await tokenService.verifyToken(refreshToken, 'refresh');
+    const userId = refreshTokenDoc.user;
+    await userService.getUserById(userId);
+    await refreshTokenDoc.remove();
+    return await generateAuthTokens(userId);
+  } catch (error) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+  }
+};
+
 module.exports = {
   generateAuthTokens,
   loginUser,
+  refreshAuthTokens,
 };
