@@ -7,6 +7,11 @@ const createUser = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(user.transform());
 });
 
+const getUser = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.userId);
+  res.send(user.transform());
+});
+
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUser(req.params.userId, req.body);
   res.send(user.transform());
@@ -14,5 +19,6 @@ const updateUser = catchAsync(async (req, res) => {
 
 module.exports = {
   createUser,
+  getUser,
   updateUser,
 };
