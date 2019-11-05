@@ -8,18 +8,19 @@ const AppError = require('../utils/AppError');
 const generateToken = (userId, expires, secret = config.jwt.secret) => {
   const payload = {
     sub: userId,
-    iat: moment().unix(),
+    iat: moment().valueOf(),
     exp: expires.unix(),
   };
   return jwt.sign(payload, secret);
 };
 
-const saveToken = async (token, userId, expires, type) => {
+const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   const tokenDoc = await Token.create({
     token,
     user: userId,
     expires: expires.toDate(),
     type,
+    blacklisted,
   });
   return tokenDoc;
 };

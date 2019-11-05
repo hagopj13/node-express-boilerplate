@@ -9,7 +9,7 @@ const auth = require('../../src/middlewares/auth');
 const tokenService = require('../../src/services/token.service');
 const AppError = require('../../src/utils/AppError');
 const setupDatabase = require('../utils/setupDatabase');
-const { User } = require('../../src/models');
+const { User, Token } = require('../../src/models');
 const { roleRights } = require('../../src/config/roles');
 const { userOne, admin, insertUsers } = require('../fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = require('../fixtures/token.fixture');
@@ -145,6 +145,96 @@ describe('Auth routes', () => {
         .expect(httpStatus.UNAUTHORIZED);
 
       expect(res.body).toEqual({ code: httpStatus.UNAUTHORIZED, message: 'Incorrect email or password' });
+    });
+  });
+
+  describe('POST /v1/auth/refreshTokens', () => {
+    test('should return 200 and new auth tokens if refresh token is valid', async () => {
+      await insertUsers([userOne]);
+      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const refreshToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
+
+      const res = await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send({ refreshToken })
+        .expect(httpStatus.OK);
+
+      expect(res.body).toEqual({
+        access: { token: expect.anything(), expires: expect.anything() },
+        refresh: { token: expect.anything(), expires: expect.anything() },
+      });
+
+      const dbRefreshTokenDoc = await Token.findOne({ token: res.body.refresh.token });
+      expect(dbRefreshTokenDoc).toMatchObject({ type: 'refresh', user: userOne._id, blacklisted: false });
+
+      const oldDbRefreshTokenDoc = await Token.findOne({ token: refreshToken });
+      expect(oldDbRefreshTokenDoc).toBeNull();
+    });
+
+    test('should return 400 error if refresh token is missing from request body', async () => {
+      await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send()
+        .expect(httpStatus.BAD_REQUEST);
+    });
+
+    test('should return 401 error if refresh token is signed using an invalid secret', async () => {
+      await insertUsers([userOne]);
+      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const refreshToken = tokenService.generateToken(userOne._id, expires, 'invalidSecret');
+      await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
+
+      await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send({ refreshToken })
+        .expect(httpStatus.UNAUTHORIZED);
+    });
+
+    test('should return 401 error if refresh token is not found in the database', async () => {
+      await insertUsers([userOne]);
+      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const refreshToken = tokenService.generateToken(userOne._id, expires);
+
+      await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send({ refreshToken })
+        .expect(httpStatus.UNAUTHORIZED);
+    });
+
+    test('should return 401 error if refresh token is blacklisted', async () => {
+      await insertUsers([userOne]);
+      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const refreshToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh', true);
+
+      await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send({ refreshToken })
+        .expect(httpStatus.UNAUTHORIZED);
+    });
+
+    test('should return 401 error if refresh token is expired', async () => {
+      await insertUsers([userOne]);
+      const expires = moment().subtract(1, 'minutes');
+      const refreshToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
+
+      await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send({ refreshToken })
+        .expect(httpStatus.UNAUTHORIZED);
+    });
+
+    test('should return 401 error if user is not found', async () => {
+      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const refreshToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
+
+      await request(app)
+        .post('/v1/auth/refreshTokens')
+        .send({ refreshToken })
+        .expect(httpStatus.UNAUTHORIZED);
     });
   });
 });
