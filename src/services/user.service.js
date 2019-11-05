@@ -36,9 +36,7 @@ const updateUser = async (userId, updateBody) => {
   if (updateBody.email) {
     await checkDuplicateEmail(updateBody.email, userId);
   }
-  Object.keys(updateBody).forEach(update => {
-    user[update] = updateBody[update];
-  });
+  Object.assign(user, updateBody);
   await user.save();
   return user;
 };
