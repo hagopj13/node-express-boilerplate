@@ -41,9 +41,16 @@ const updateUser = async (userId, updateBody) => {
   return user;
 };
 
+const deleteUser = async userId => {
+  const user = await getUserById(userId);
+  await user.remove();
+  return user;
+};
+
 module.exports = {
   createUser,
-  updateUser,
   getUserById,
   getUserByEmail,
+  updateUser,
+  deleteUser,
 };
