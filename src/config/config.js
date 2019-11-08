@@ -9,7 +9,7 @@ module.exports = {
   env: process.env.NODE_ENV,
   port: process.env.PORT,
   mongoose: {
-    url: process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URL : process.env.MONGODB_URL,
+    url: process.env.MONGODB_URL,
     options: { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true },
   },
   jwt: {
