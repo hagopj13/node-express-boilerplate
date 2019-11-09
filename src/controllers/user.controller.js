@@ -7,6 +7,12 @@ const createUser = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(user.transform());
 });
 
+const getUsers = catchAsync(async (req, res) => {
+  const users = await userService.getUsers(req.query);
+  const response = users.map(user => user.transform());
+  res.send(response);
+});
+
 const getUser = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
   res.send(user.transform());
@@ -24,6 +30,7 @@ const deleteUser = catchAsync(async (req, res) => {
 
 module.exports = {
   createUser,
+  getUsers,
   getUser,
   updateUser,
   deleteUser,

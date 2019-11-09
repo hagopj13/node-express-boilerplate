@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
+const { pick } = require('lodash');
 const AppError = require('../utils/AppError');
 const { User } = require('../models');
+const { getQueryOptions } = require('../utils/service.util');
 
 const checkDuplicateEmail = async (email, excludeUserId) => {
   const user = await User.findOne({ email, _id: { $ne: excludeUserId } });
@@ -13,6 +15,14 @@ const createUser = async userBody => {
   await checkDuplicateEmail(userBody.email);
   const user = await User.create(userBody);
   return user;
+};
+
+const getUsers = async query => {
+  const filter = pick(query, ['name', 'role']);
+  const options = getQueryOptions(query);
+
+  const users = await User.find(filter, null, options);
+  return users;
 };
 
 const getUserById = async userId => {
@@ -49,6 +59,7 @@ const deleteUser = async userId => {
 
 module.exports = {
   createUser,
+  getUsers,
   getUserById,
   getUserByEmail,
   updateUser,
