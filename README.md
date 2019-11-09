@@ -10,9 +10,10 @@ It comes with many built-in features, such as authentication using JWT, request 
 - [Express](http://expressjs.com)
 - [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)
 - Authentication using [passport](http://www.passportjs.org) and role-based authorization
-- Unit and integration tests using [Jest](https://jestjs.io/)
+- Unit and integration tests using [Jest](https://jestjs.io)
 - Request data validation using [Joi](https://github.com/hapijs/joi)
 - Advanced production process management using [PM2](https://pm2.keymetrics.io)
+- Continuous integration with [Travis CI](https://travis-ci.org)
 - Dependency management with [Yarn](https://yarnpkg.com)
 - Logging using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
 - Centralized error handling mechanism
