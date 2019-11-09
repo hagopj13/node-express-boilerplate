@@ -1,6 +1,7 @@
 # RESTful API Node Server Boilerplate
 
 [![Build Status](https://travis-ci.org/hagopj13/node-express-mongoose-boilerplate.svg?branch=master)](https://travis-ci.org/hagopj13/node-express-mongoose-boilerplate)
+[![Coverage Status](https://coveralls.io/repos/github/hagopj13/node-express-mongoose-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/hagopj13/node-express-mongoose-boilerplate?branch=master)
 
 A boilerplate/starter project for quickly building production-ready RESTful APIs using Node.js, Express, and Mongoose.
 
