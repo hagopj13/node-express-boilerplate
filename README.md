@@ -16,6 +16,7 @@ It comes with many built-in features, such as authentication using JWT, request 
 - Request data validation using [Joi](https://github.com/hapijs/joi)
 - Advanced production process management using [PM2](https://pm2.keymetrics.io)
 - Continuous integration with [Travis CI](https://travis-ci.org)
+- Code coverage with [coveralls](https://coveralls.io)
 - Dependency management with [Yarn](https://yarnpkg.com)
 - Logging using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
 - Centralized error handling mechanism
