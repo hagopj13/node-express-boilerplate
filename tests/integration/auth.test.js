@@ -148,7 +148,7 @@ describe('Auth routes', () => {
     });
   });
 
-  describe('POST /v1/auth/refreshTokens', () => {
+  describe('POST /v1/auth/refresh-tokens', () => {
     test('should return 200 and new auth tokens if refresh token is valid', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
@@ -156,7 +156,7 @@ describe('Auth routes', () => {
       await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
 
       const res = await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.OK);
 
@@ -174,7 +174,7 @@ describe('Auth routes', () => {
 
     test('should return 400 error if refresh token is missing from request body', async () => {
       await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send()
         .expect(httpStatus.BAD_REQUEST);
     });
@@ -186,7 +186,7 @@ describe('Auth routes', () => {
       await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
 
       await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.UNAUTHORIZED);
     });
@@ -197,7 +197,7 @@ describe('Auth routes', () => {
       const refreshToken = tokenService.generateToken(userOne._id, expires);
 
       await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.UNAUTHORIZED);
     });
@@ -209,7 +209,7 @@ describe('Auth routes', () => {
       await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh', true);
 
       await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.UNAUTHORIZED);
     });
@@ -221,7 +221,7 @@ describe('Auth routes', () => {
       await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
 
       await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.UNAUTHORIZED);
     });
@@ -232,7 +232,7 @@ describe('Auth routes', () => {
       await tokenService.saveToken(refreshToken, userOne._id, expires, 'refresh');
 
       await request(app)
-        .post('/v1/auth/refreshTokens')
+        .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.UNAUTHORIZED);
     });
