@@ -1,14 +1,9 @@
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const config = require('../../src/config/config');
-
-let mongod;
 
 const setupTestDB = () => {
   beforeAll(async () => {
-    mongod = new MongoMemoryServer();
-    const uri = await mongod.getUri();
-    await mongoose.connect(uri, config.mongoose.options);
+    await mongoose.connect(config.mongoose.url, config.mongoose.options);
   });
 
   beforeEach(async () => {
@@ -17,7 +12,6 @@ const setupTestDB = () => {
 
   afterAll(async () => {
     await mongoose.disconnect();
-    await mongod.stop();
   });
 };
 

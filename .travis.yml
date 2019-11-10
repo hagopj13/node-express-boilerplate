@@ -1,6 +1,8 @@
 language: node_js
 node_js:
   - '12'
+services:
+  - mongodb
 cache: yarn
 branches:
   only:
