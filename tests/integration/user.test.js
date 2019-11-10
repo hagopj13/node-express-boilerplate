@@ -137,6 +137,116 @@ describe('User routes', () => {
     });
   });
 
+  describe('GET /v1/users', () => {
+    test('should return 200 and all users', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toBeInstanceOf(Array);
+      expect(res.body).toHaveLength(3);
+      expect(res.body[0]).toEqual({
+        id: userOne._id.toHexString(),
+        name: userOne.name,
+        email: userOne.email,
+        role: userOne.role,
+      });
+    });
+
+    test('should return 401 if access token is missing', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      await request(app)
+        .get('/v1/users')
+        .send()
+        .expect(httpStatus.UNAUTHORIZED);
+    });
+
+    test('should return 403 if a non-admin is trying to access all users', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${userOneAccessToken}`)
+        .send()
+        .expect(httpStatus.FORBIDDEN);
+    });
+
+    test('should correctly apply filter on name field', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ name: userOne.name })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(1);
+      expect(res.body[0].id).toBe(userOne._id.toHexString());
+    });
+
+    test('should correctly apply filter on role field', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ role: 'user' })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(2);
+      expect(res.body[0].id).toBe(userOne._id.toHexString());
+      expect(res.body[1].id).toBe(userTwo._id.toHexString());
+    });
+
+    test('should correctly sort returned array if sort param is specified', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ sort: 'role' })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(3);
+      expect(res.body[0].id).toBe(admin._id.toHexString());
+    });
+
+    test('should limit returned array if limit param is specified', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ limit: 2 })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(2);
+    });
+
+    test('should return the correct page if page and limit params are specified', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ page: 2, limit: 2 })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(1);
+      expect(res.body[0].id).toBe(admin._id.toHexString());
+    });
+  });
+
   describe('GET /v1/users/:userId', () => {
     test('should return 200 and the user object if data is ok', async () => {
       await insertUsers([userOne]);

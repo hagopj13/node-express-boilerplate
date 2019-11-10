@@ -20,7 +20,6 @@ const createUser = async userBody => {
 const getUsers = async query => {
   const filter = pick(query, ['name', 'role']);
   const options = getQueryOptions(query);
-
   const users = await User.find(filter, null, options);
   return users;
 };
