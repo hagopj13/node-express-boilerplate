@@ -2,12 +2,12 @@ const request = require('supertest');
 const faker = require('faker');
 const httpStatus = require('http-status');
 const app = require('../../src/app');
-const setupDatabase = require('../utils/setupDatabase');
+const setupTestDB = require('../utils/setupTestDB');
 const { User } = require('../../src/models');
 const { userOne, userTwo, admin, insertUsers } = require('../fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = require('../fixtures/token.fixture');
 
-setupDatabase();
+setupTestDB();
 
 describe('User routes', () => {
   describe('POST /v1/users', () => {

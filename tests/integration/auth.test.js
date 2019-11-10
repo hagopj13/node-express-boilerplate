@@ -8,13 +8,13 @@ const config = require('../../src/config/config');
 const auth = require('../../src/middlewares/auth');
 const tokenService = require('../../src/services/token.service');
 const AppError = require('../../src/utils/AppError');
-const setupDatabase = require('../utils/setupDatabase');
+const setupTestDB = require('../utils/setupTestDB');
 const { User, Token } = require('../../src/models');
 const { roleRights } = require('../../src/config/roles');
 const { userOne, admin, insertUsers } = require('../fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = require('../fixtures/token.fixture');
 
-setupDatabase();
+setupTestDB();
 
 describe('Auth routes', () => {
   describe('POST /v1/auth/register', () => {

@@ -4,7 +4,7 @@ const config = require('../../src/config/config');
 
 let mongod;
 
-const setupDatabase = () => {
+const setupTestDB = () => {
   beforeAll(async () => {
     mongod = new MongoMemoryServer();
     const uri = await mongod.getUri();
@@ -21,4 +21,4 @@ const setupDatabase = () => {
   });
 };
 
-module.exports = setupDatabase;
+module.exports = setupTestDB;
