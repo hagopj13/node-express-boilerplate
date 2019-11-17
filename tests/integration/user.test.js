@@ -205,13 +205,27 @@ describe('User routes', () => {
       expect(res.body[1].id).toBe(userTwo._id.toHexString());
     });
 
-    test('should correctly sort returned array if sort param is specified', async () => {
+    test('should correctly sort returned array if descending sort param is specified', async () => {
       await insertUsers([userOne, userTwo, admin]);
 
       const res = await request(app)
         .get('/v1/users')
         .set('Authorization', `Bearer ${adminAccessToken}`)
-        .query({ sort: 'role' })
+        .query({ sortBy: 'role:desc' })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(3);
+      expect(res.body[0].id).toBe(userOne._id.toHexString());
+    });
+
+    test('should correctly sort returned array if ascending sort param is specified', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ sortBy: 'role:asc' })
         .send()
         .expect(httpStatus.OK);
 
