@@ -22,6 +22,11 @@ const envVarsSchema = Joi.object()
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number()
       .default(30)
       .description('days after which refresh tokens expire'),
+    EMAIL_HOST: Joi.string().description('email service host which is passed to transporter configuration'),
+    EMAIL_PORT: Joi.number().description('email service port which is passed to transporter configuration'),
+    EMAIL_USER: Joi.string().description('email service username which is passed to transporter configuration'),
+    EMAIL_PASS: Joi.string().description('email service password which is passed to transporter configuration'),
+    EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
   })
   .unknown();
 
@@ -42,5 +47,16 @@ module.exports = {
     secret: envVars.JWT_SECRET,
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
+  },
+  email: {
+    transport: {
+      host: envVars.EMAIL_HOST,
+      port: envVars.EMAIL_PORT,
+      auth: {
+        user: envVars.EMAIL_USER,
+        pass: envVars.EMAIL_PASS,
+      },
+    },
+    from: envVars.EMAIL_FROM,
   },
 };
