@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, userService } = require('../services');
+const { authService, userService, emailService } = require('../services');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -22,8 +22,15 @@ const refreshTokens = catchAsync(async (req, res) => {
   res.send(response);
 });
 
+const forgotPassword = catchAsync(async (req, res) => {
+  const resetPasswordToken = await authService.generateResetPasswordToken(req.body.email);
+  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
 module.exports = {
   register,
   login,
   refreshTokens,
+  forgotPassword,
 };

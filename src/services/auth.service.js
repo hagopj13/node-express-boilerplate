@@ -55,8 +55,17 @@ const refreshAuthTokens = async refreshToken => {
   }
 };
 
+const generateResetPasswordToken = async email => {
+  const user = await userService.getUserByEmail(email);
+  const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+  const resetPasswordToken = tokenService.generateToken(user._id, expires);
+  await tokenService.saveToken(resetPasswordToken, user._id, expires, 'resetPassword');
+  return resetPasswordToken;
+};
+
 module.exports = {
   generateAuthTokens,
   loginUser,
   refreshAuthTokens,
+  generateResetPasswordToken,
 };
