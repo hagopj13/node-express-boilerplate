@@ -6,7 +6,7 @@ const moment = require('moment');
 const app = require('../../src/app');
 const config = require('../../src/config/config');
 const auth = require('../../src/middlewares/auth');
-const tokenService = require('../../src/services/token.service');
+const { tokenService, emailService } = require('../../src/services');
 const AppError = require('../../src/utils/AppError');
 const setupTestDB = require('../utils/setupTestDB');
 const { User, Token } = require('../../src/models');
@@ -235,6 +235,43 @@ describe('Auth routes', () => {
         .post('/v1/auth/refresh-tokens')
         .send({ refreshToken })
         .expect(httpStatus.UNAUTHORIZED);
+    });
+  });
+
+  describe('POST /v1/auth/forgot-password', () => {
+    beforeEach(() => {
+      jest.spyOn(emailService.transporter, 'sendMail').mockResolvedValue();
+    });
+
+    test('should return 204 and send reset password email to the user', async () => {
+      await insertUsers([userOne]);
+      const sendResetPasswordEmailSpy = jest.spyOn(emailService, 'sendResetPasswordEmail');
+
+      await request(app)
+        .post('/v1/auth/forgot-password')
+        .send({ email: userOne.email })
+        .expect(httpStatus.NO_CONTENT);
+
+      expect(sendResetPasswordEmailSpy).toHaveBeenCalledWith(userOne.email, expect.any(String));
+      const resetPasswordToken = sendResetPasswordEmailSpy.mock.calls[0][1];
+      const dbResetPasswordTokenDoc = await Token.findOne({ token: resetPasswordToken, user: userOne._id });
+      expect(dbResetPasswordTokenDoc).toBeDefined();
+    });
+
+    test('should return 400 if email is missing', async () => {
+      await insertUsers([userOne]);
+
+      await request(app)
+        .post('/v1/auth/forgot-password')
+        .send()
+        .expect(httpStatus.BAD_REQUEST);
+    });
+
+    test('should return 404 if email does not belong to any user', async () => {
+      await request(app)
+        .post('/v1/auth/forgot-password')
+        .send({ email: userOne.email })
+        .expect(httpStatus.NOT_FOUND);
     });
   });
 });
