@@ -4,6 +4,7 @@ const httpStatus = require('http-status');
 const config = require('../config/config');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
+const Token = require('../models/token.model');
 const AppError = require('../utils/AppError');
 
 const generateAuthTokens = async userId => {
@@ -55,8 +56,30 @@ const refreshAuthTokens = async refreshToken => {
   }
 };
 
+const generateResetPasswordToken = async email => {
+  const user = await userService.getUserByEmail(email);
+  const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+  const resetPasswordToken = tokenService.generateToken(user._id, expires);
+  await tokenService.saveToken(resetPasswordToken, user._id, expires, 'resetPassword');
+  return resetPasswordToken;
+};
+
+const resetPassword = async (resetPasswordToken, newPassword) => {
+  let userId;
+  try {
+    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, 'resetPassword');
+    userId = resetPasswordTokenDoc.user;
+    await userService.updateUser(userId, { password: newPassword });
+  } catch (error) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+  }
+  await Token.deleteMany({ user: userId, type: 'resetPassword' });
+};
+
 module.exports = {
   generateAuthTokens,
   loginUser,
   refreshAuthTokens,
+  generateResetPasswordToken,
+  resetPassword,
 };
