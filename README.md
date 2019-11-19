@@ -19,10 +19,15 @@ It comes with many built-in features, such as authentication using JWT, request 
 - Advanced production process management using [PM2](https://pm2.keymetrics.io)
 - Continuous integration with [Travis CI](https://travis-ci.org)
 - Code coverage with [coveralls](https://coveralls.io)
+- Code quality checking with [Codacy](https://www.codacy.com)
 - Dependency management with [Yarn](https://yarnpkg.com)
 - Logging using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
 - Centralized error handling mechanism
 - Environment variables using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
+- Set security HTTP headers using [helmet](https://helmetjs.github.io)
+- Sanitize request data against xss and query injection
+- Cross-Origin Resource-Sharing enabled using [cors](https://github.com/expressjs/cors)
+- Gzip compression with [compression](https://github.com/expressjs/compression)
 - Git hooks with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
 - Linting with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
 - Consistent editor configuration using [EditorConfig](https://editorconfig.org)
