@@ -10,27 +10,100 @@ It comes with many built-in features, such as authentication using JWT, request 
 
 ## Features
 
-- Latest ECMAScript features
-- [Express](http://expressjs.com)
-- [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)
-- Authentication using [passport](http://www.passportjs.org) and role-based authorization
-- Unit and integration tests using [Jest](https://jestjs.io)
-- Request data validation using [Joi](https://github.com/hapijs/joi)
-- Advanced production process management using [PM2](https://pm2.keymetrics.io)
-- Continuous integration with [Travis CI](https://travis-ci.org)
-- Code coverage with [coveralls](https://coveralls.io)
-- Code quality checking with [Codacy](https://www.codacy.com)
-- Dependency management with [Yarn](https://yarnpkg.com)
-- Logging using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
-- Centralized error handling mechanism
-- Environment variables using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
-- Set security HTTP headers using [helmet](https://helmetjs.github.io)
-- Sanitize request data against xss and query injection
-- Cross-Origin Resource-Sharing enabled using [cors](https://github.com/expressjs/cors)
-- Gzip compression with [compression](https://github.com/expressjs/compression)
-- Git hooks with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
-- Linting with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
-- Consistent editor configuration using [EditorConfig](https://editorconfig.org)
+- **ES9**: latest ECMAScript features
+- **NoSQL database**: [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)
+- **Authentication and authorization**: using [passport](http://www.passportjs.org)
+- **Validation**: request data validation using [Joi](https://github.com/hapijs/joi)
+- **Logging**: using [winston](https://github.com/winstonjs/winston) and [morgan](https://github.com/expressjs/morgan)
+- **Testing**: unit and integration tests using [Jest](https://jestjs.io)
+- **Error handling**: centralized error handling mechanism
+- **Process management**: advanced production process management using [PM2](https://pm2.keymetrics.io)
+- **Dependency management**: with [Yarn](https://yarnpkg.com)
+- **Environment variables**: using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
+- **Security**: set security HTTP headers using [helmet](https://helmetjs.github.io)
+- **Santizing**: sanitize request data against xss and query injection
+- **CORS**: Cross-Origin Resource-Sharing enabled using [cors](https://github.com/expressjs/cors)
+- **Compression**: gzip compression with [compression](https://github.com/expressjs/compression)
+- **CI**: continuous integration with [Travis CI](https://travis-ci.org)
+- **Code coverage**: using [coveralls](https://coveralls.io)
+- **Code quality**: with [Codacy](https://www.codacy.com)
+- **Git hooks**: with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
+- **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
+- **Editor config**: consistent editor configuration using [EditorConfig](https://editorconfig.org)
+
+## Getting Started
+
+### Installation
+
+Clone the repo:
+
+```bash
+git clone https://github.com/hagopj13/node-express-mongoose-boilerplate.git
+cd node-express-mongoose-boilerplate
+```
+
+Install dependencies:
+
+```bash
+yarn install
+```
+
+Environment varibales:
+
+```bash
+cp .env.example .env
+
+# open the .env file and fill out any empty environment vars (optional)
+```
+
+### Commands
+
+Running locally:
+
+```bash
+yarn dev
+```
+
+Running in production:
+
+```bash
+yarn start
+```
+
+Testing:
+
+```bash
+# run all tests
+yarn test
+
+# run all tests in watch mode
+yarn test:watch
+
+# run test coverage
+yarn coverage
+```
+
+Linting:
+
+```bash
+# run ESLint
+yarn lint
+
+# fix ESLint errors
+yarn lint:fix
+
+# run prettier
+yarn prettier
+
+# fix prettier errors
+yarn prettier:fix
+```
+
+## Inspirations
+
+- [danielfsousa/express-rest-es2017-boilerplate](https://github.com/danielfsousa/express-rest-es2017-boilerplate)
+- [madhums/node-express-mongoose](https://github.com/madhums/node-express-mongoose)
+- [kunalkapadia/express-mongoose-es6-rest-api](https://github.com/kunalkapadia/express-mongoose-es6-rest-api)
 
 ## License
 
