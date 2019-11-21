@@ -20,6 +20,27 @@
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js"
   },
+  "keywords": [
+    "node",
+    "node.js",
+    "boilerplate",
+    "generator",
+    "express",
+    "rest",
+    "api",
+    "mongodb",
+    "mongoose",
+    "es6",
+    "es7",
+    "es8",
+    "es9",
+    "jest",
+    "travis",
+    "passport",
+    "joi",
+    "eslint",
+    "prettier"
+  ],
   "dependencies": {
     "@hapi/joi": "^16.1.7",
     "bcryptjs": "^2.4.3",
