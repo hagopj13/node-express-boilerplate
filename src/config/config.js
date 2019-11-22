@@ -22,10 +22,10 @@ const envVarsSchema = Joi.object()
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number()
       .default(30)
       .description('days after which refresh tokens expire'),
-    EMAIL_HOST: Joi.string().description('email service host which is passed to transporter configuration'),
-    EMAIL_PORT: Joi.number().description('email service port which is passed to transporter configuration'),
-    EMAIL_USER: Joi.string().description('email service username which is passed to transporter configuration'),
-    EMAIL_PASS: Joi.string().description('email service password which is passed to transporter configuration'),
+    SMTP_HOST: Joi.string().description('server that will send the emails'),
+    SMTP_PORT: Joi.number().description('port to connect to the email server'),
+    SMTP_USERNAME: Joi.string().description('username for email server'),
+    SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
   })
   .unknown();
@@ -50,12 +50,12 @@ module.exports = {
     resetPasswordExpirationMinutes: 10,
   },
   email: {
-    transport: {
-      host: envVars.EMAIL_HOST,
-      port: envVars.EMAIL_PORT,
+    smtp: {
+      host: envVars.SMTP_HOST,
+      port: envVars.SMTP_PORT,
       auth: {
-        user: envVars.EMAIL_USER,
-        pass: envVars.EMAIL_PASS,
+        user: envVars.SMTP_USERNAME,
+        pass: envVars.SMTP_PASSWORD,
       },
     },
     from: envVars.EMAIL_FROM,

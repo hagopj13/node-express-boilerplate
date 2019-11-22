@@ -54,7 +54,7 @@ Environment varibales:
 ```bash
 cp .env.example .env
 
-# open the .env file and fill out any empty environment vars (optional)
+# open .env and modify the environment variables (if needed)
 ```
 
 ### Commands
