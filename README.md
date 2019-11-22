@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/hagopj13/node-express-mongoose-boilerplate.svg?branch=master)](https://travis-ci.org/hagopj13/node-express-mongoose-boilerplate)
 [![Coverage Status](https://coveralls.io/repos/github/hagopj13/node-express-mongoose-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/hagopj13/node-express-mongoose-boilerplate?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ab03f5d62a1404f87a659afe8d6d5de)](https://www.codacy.com/manual/hagopj13/node-express-mongoose-boilerplate?utm_source=github.com&utm_medium=referral&utm_content=hagopj13/node-express-mongoose-boilerplate&utm_campaign=Badge_Grade)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 A boilerplate/starter project for quickly building production-ready RESTful APIs using Node.js, Express, and Mongoose.
 
@@ -98,6 +99,10 @@ yarn prettier
 # fix prettier errors
 yarn prettier:fix
 ```
+
+## Contributing
+
+Contributions are more than welcome! Please check out the [contributing guide](CONTRIBUTING.md).
 
 ## Inspirations
 
