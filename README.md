@@ -26,6 +26,7 @@ It comes with many built-in features, such as authentication using JWT, request 
 - **CORS**: Cross-Origin Resource-Sharing enabled using [cors](https://github.com/expressjs/cors)
 - **Compression**: gzip compression with [compression](https://github.com/expressjs/compression)
 - **CI**: continuous integration with [Travis CI](https://travis-ci.org)
+- **Docker support**
 - **Code coverage**: using [coveralls](https://coveralls.io)
 - **Code quality**: with [Codacy](https://www.codacy.com)
 - **Git hooks**: with [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
@@ -82,6 +83,19 @@ yarn test:watch
 
 # run test coverage
 yarn coverage
+```
+
+Docker:
+
+```bash
+# run docker container in development mode
+yarn docker:dev
+
+# run docker container in production mode
+yarn docker:prod
+
+# run all tests in a docker container
+yarn docker:test
 ```
 
 Linting:

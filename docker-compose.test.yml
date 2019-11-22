@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  node-app:
+    container_name: node-app-test
+    command: yarn test
