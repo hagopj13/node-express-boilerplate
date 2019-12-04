@@ -169,8 +169,8 @@ describe('Auth routes', () => {
       const dbRefreshTokenDoc = await Token.findOne({ token: res.body.refresh.token });
       expect(dbRefreshTokenDoc).toMatchObject({ type: 'refresh', user: userOne._id, blacklisted: false });
 
-      const oldDbRefreshTokenDoc = await Token.findOne({ token: refreshToken });
-      expect(oldDbRefreshTokenDoc).toBeNull();
+      const dbRefreshTokenCount = await Token.countDocuments();
+      expect(dbRefreshTokenCount).toBe(1);
     });
 
     test('should return 400 error if refresh token is missing from request body', async () => {
