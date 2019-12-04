@@ -8,7 +8,7 @@ const AppError = require('../utils/AppError');
 const generateToken = (userId, expires, secret = config.jwt.secret) => {
   const payload = {
     sub: userId,
-    iat: moment().valueOf(),
+    iat: moment().unix(),
     exp: expires.unix(),
   };
   return jwt.sign(payload, secret);
