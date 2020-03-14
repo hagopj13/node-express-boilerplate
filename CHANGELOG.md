@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.3](https://github.com/hagopj13/node-express-mongoose-boilerplate/compare/v1.1.2...v1.1.3) (2020-03-14)
+
+### Bug Fixes
+
+- fix vulnerability issues by upgrading dependencies ([9c15650](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/9c15650acfb0d991b621abc60ba534c904fd3fd1))
+
 ## [1.1.2](https://github.com/hagopj13/node-express-mongoose-boilerplate/compare/v1.1.1...v1.1.2) (2020-02-16)
 
 ### Bug Fixes
