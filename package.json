@@ -67,6 +67,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pm2": "^4.1.2",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
     "validator": "^12.0.0",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1"
