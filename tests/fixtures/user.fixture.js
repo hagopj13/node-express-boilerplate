@@ -31,8 +31,8 @@ const admin = {
   role: 'admin',
 };
 
-const insertUsers = async users => {
-  await User.insertMany(users.map(user => ({ ...user, password: hashedPassword })));
+const insertUsers = async (users) => {
+  await User.insertMany(users.map((user) => ({ ...user, password: hashedPassword })));
 };
 
 module.exports = {

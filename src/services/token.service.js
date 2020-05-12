@@ -32,7 +32,7 @@ const verifyToken = async (token, type) => {
   return tokenDoc;
 };
 
-const generateAuthTokens = async userId => {
+const generateAuthTokens = async (userId) => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(userId, accessTokenExpires);
 
@@ -52,7 +52,7 @@ const generateAuthTokens = async userId => {
   };
 };
 
-const generateResetPasswordToken = async userId => {
+const generateResetPasswordToken = async (userId) => {
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(userId, expires);
   await saveToken(resetPasswordToken, userId, expires, 'resetPassword');

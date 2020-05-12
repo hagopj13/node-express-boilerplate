@@ -11,7 +11,7 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
 
   if (requiredRights.length) {
     const userRights = roleRights.get(user.role);
-    const hasRequiredRights = requiredRights.every(requiredRight => userRights.includes(requiredRight));
+    const hasRequiredRights = requiredRights.every((requiredRight) => userRights.includes(requiredRight));
     if (!hasRequiredRights && req.params.userId !== user.id) {
       return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
     }
@@ -25,7 +25,7 @@ const auth = (...requiredRights) => async (req, res, next) => {
     passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
   })
     .then(() => next())
-    .catch(err => next(err));
+    .catch((err) => next(err));
 };
 
 module.exports = auth;

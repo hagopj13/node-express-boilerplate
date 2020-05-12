@@ -17,7 +17,7 @@ const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = getQueryOptions(req.query);
   const users = await User.find(filter, null, options);
-  const response = users.map(user => user.transform());
+  const response = users.map((user) => user.transform());
   res.send(response);
 });
 

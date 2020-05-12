@@ -22,7 +22,7 @@ const exitHandler = () => {
   }
 };
 
-const unexpectedErrorHandler = error => {
+const unexpectedErrorHandler = (error) => {
   logger.error(error);
   exitHandler();
 };
