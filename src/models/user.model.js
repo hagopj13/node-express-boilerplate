@@ -47,6 +47,16 @@ const userSchema = mongoose.Schema(
   }
 );
 
+userSchema.statics.isEmailTaken = async function(email, excludeUserId) {
+  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+  return !!user;
+};
+
+userSchema.methods.isPasswordMatch = async function(password) {
+  const user = this;
+  return bcrypt.compare(password, user.password);
+};
+
 userSchema.methods.toJSON = function() {
   const user = this;
   return omit(user.toObject(), ['password']);
