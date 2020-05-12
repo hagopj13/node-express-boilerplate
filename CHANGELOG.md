@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/hagopj13/node-express-mongoose-boilerplate/compare/v1.1.3...v1.2.0) (2020-05-13)
+
+### Features
+
+- add api documentation ([#12](https://github.com/hagopj13/node-express-mongoose-boilerplate/pull/12)) ([0777889](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/07778894b706ef94e35f87046db112b39b58316c)), closes [#3](https://github.com/hagopj13/node-express-mongoose-boilerplate/issues/3)
+
+### Bug Fixes
+
+- run app with a non-root user inside docker ([#10](https://github.com/hagopj13/node-express-mongoose-boilerplate/pull/10)) ([1e3195d](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/1e3195d547510d51804028d4ab447cbc53372e48))
+
 ## [1.1.3](https://github.com/hagopj13/node-express-mongoose-boilerplate/compare/v1.1.2...v1.1.3) (2020-03-14)
 
 ### Bug Fixes
@@ -24,7 +34,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-- add docker support ([#2](https://github.com/hagopj13/node-express-mongoose-boilerplate/issues/2)) ([3401449](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/340144979cf5e84abb047a891a0b908b01af3645))
+- add docker support ([3401449](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/340144979cf5e84abb047a891a0b908b01af3645)), closes [#2](https://github.com/hagopj13/node-express-mongoose-boilerplate/issues/2)
 - verify connection to email server at startup ([f38d86a](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/f38d86a181f1816d720e009aa94619e25ef4bf93))
 
 ## 1.0.0 (2019-11-22)
