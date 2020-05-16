@@ -10,7 +10,7 @@ const register = catchAsync(async (req, res) => {
   }
   const user = await User.create(req.body);
   const tokens = await tokenService.generateAuthTokens(user.id);
-  const response = { user: user.transform(), tokens };
+  const response = { user, tokens };
   res.status(httpStatus.CREATED).send(response);
 });
 
@@ -21,7 +21,7 @@ const login = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
   const tokens = await tokenService.generateAuthTokens(user.id);
-  const response = { user: user.transform(), tokens };
+  const response = { user, tokens };
   res.send(response);
 });
 

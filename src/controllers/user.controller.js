@@ -10,14 +10,14 @@ const createUser = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
   const user = await User.create(req.body);
-  res.status(httpStatus.CREATED).send(user.transform());
+  res.status(httpStatus.CREATED).send(user);
 });
 
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = getQueryOptions(req.query);
   const users = await User.find(filter, null, options);
-  const response = users.map((user) => user.transform());
+  const response = users;
   res.send(response);
 });
 
@@ -26,7 +26,7 @@ const getUser = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  res.send(user.transform());
+  res.send(user);
 });
 
 const updateUser = catchAsync(async (req, res) => {
@@ -39,7 +39,7 @@ const updateUser = catchAsync(async (req, res) => {
   }
   Object.assign(user, req.body);
   await user.save();
-  res.send(user.transform());
+  res.send(user);
 });
 
 const deleteUser = catchAsync(async (req, res) => {
