@@ -1,28 +1,24 @@
 const httpStatus = require('http-status');
 const { pick } = require('lodash');
-const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
+const { userService } = require('../services');
 const { getQueryOptions } = require('../utils/query.utils');
 
 const createUser = catchAsync(async (req, res) => {
-  if (await User.isEmailTaken(req.body.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }
-  const user = await User.create(req.body);
+  const user = await userService.createUser(req.body);
   res.status(httpStatus.CREATED).send(user);
 });
 
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = getQueryOptions(req.query);
-  const users = await User.find(filter, null, options);
-  const response = users;
-  res.send(response);
+  const users = await userService.getUsers(filter, options);
+  res.send(users);
 });
 
 const getUser = catchAsync(async (req, res) => {
-  const user = await User.findById(req.params.userId);
+  const user = await userService.getUserById(req.params.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
@@ -30,24 +26,12 @@ const getUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const user = await User.findById(req.params.userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  if (req.body.email && (await User.isEmailTaken(req.body.email, user.id))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }
-  Object.assign(user, req.body);
-  await user.save();
+  const user = await userService.updateUserById(req.params.userId, req.body);
   res.send(user);
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-  const user = await User.findById(req.params.userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  await user.remove();
+  await userService.deleteUserById(req.params.userId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
