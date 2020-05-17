@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { toJSON } = require('./utils');
+const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
@@ -48,6 +48,7 @@ const userSchema = mongoose.Schema(
 
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
+userSchema.plugin(paginate);
 
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });

@@ -3,7 +3,6 @@ const { pick } = require('lodash');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
-const { getQueryOptions } = require('../utils/query.utils');
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -11,9 +10,9 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
-  const options = getQueryOptions(req.query);
-  const users = await userService.getUsers(filter, options);
+  const query = pick(req.query, ['name', 'role']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const users = await userService.queryUsers(query, options);
   res.send(users);
 });
 

@@ -108,7 +108,7 @@ module.exports = router;
  *          schema:
  *            type: integer
  *            minimum: 1
- *          default: 100
+ *          default: 10
  *          description: Maximum number of users
  *        - in: query
  *          name: page
@@ -123,9 +123,24 @@ module.exports = router;
  *          content:
  *            application/json:
  *              schema:
- *                type: array
- *                items:
- *                  $ref: '#/components/schemas/User'
+ *                type: object
+ *                properties:
+ *                  results:
+ *                    type: array
+ *                    items:
+ *                      $ref: '#/components/schemas/User'
+ *                  page:
+ *                    type: integer
+ *                    example: 1
+ *                  limit:
+ *                    type: integer
+ *                    example: 10
+ *                  totalPages:
+ *                    type: integer
+ *                    example: 1
+ *                  totalResults:
+ *                    type: integer
+ *                    example: 1
  *        "401":
  *          $ref: '#/components/responses/Unauthorized'
  *        "403":
