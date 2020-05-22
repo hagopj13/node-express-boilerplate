@@ -45,13 +45,13 @@ git clone https://github.com/hagopj13/node-express-mongoose-boilerplate.git
 cd node-express-mongoose-boilerplate
 ```
 
-Install dependencies:
+Install the dependencies:
 
 ```bash
 yarn install
 ```
 
-Environment varibales:
+Set the environment variables:
 
 ```bash
 cp .env.example .env
