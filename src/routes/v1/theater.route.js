@@ -1,39 +1,55 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
-const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const theaterController = require('../../controllers/theater.controller');
+const multer = require('multer');
+
+// yüklenecek resim için dosya isimlerinin belirlenmesi.
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'upload/')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, 'cropped-' + uniqueSuffix + '.jpg')
+  }
+})
+
+//const upload = multer({ dest : 'upload/'});
+const upload = multer({ storage :storage});
 
 const router = express.Router();
 
-router
-  .route('/')
-  .post(auth('admin'), validate(userValidation.createUser), userController.createUser)
-  .get(auth('admin'), validate(userValidation.getUsers), userController.getUsers);
+router.route('/')
+  .get(auth('admin'), theaterController.getTheaters)
+  .post(theaterController.createTheater);
 
-router
-  .route('/:userId')
-  .get(auth('admin'), validate(userValidation.getUser), userController.getUser)
-  .patch(auth('admin'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('admin'), validate(userValidation.deleteUser), userController.deleteUser);
+router.route('/:id')
+  .get(auth('admin'), theaterController.getTheaterDetail)
+  .patch(auth('admin'), theaterController.updateTheater)
+  .delete(theaterController.deleteTheater);
+
+router.route('/:id/image')
+  .post(auth('admin'), upload.single('image'), theaterController.uploadImage)
+  .delete(auth('admin'), theaterController.deleteImage);
 
 module.exports = router;
+
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: User management and retrieval
+ *   name: Theaters
+ *   description: Theater yönetim
  */
 
 /**
  * @swagger
  * path:
- *  /users:
+ *  /theaters:
  *    post:
- *      summary: Create a user
+ *      summary: Create a theater
  *      description: Only admins can create other users.
- *      tags: [Users]
+ *      tags: [Theaters]
  *      security:
  *        - bearerAuth: []
  *      requestBody:
@@ -45,28 +61,13 @@ module.exports = router;
  *              required:
  *                - name
  *                - email
- *                - password
- *                - role
  *              properties:
  *                name:
  *                  type: string
- *                email:
- *                  type: string
- *                  format: email
- *                  description: must be unique
- *                password:
- *                  type: string
- *                  format: password
- *                  minLength: 8
- *                  description: At least one number and one letter
- *                role:
- *                   type: string
- *                   enum: [user, admin]
+ *                  body: string
  *              example:
- *                name: fake name
- *                email: fake@example.com
- *                password: password1
- *                role: user
+ *                name: Title name
+ *                body: Lorem ipsum dolor sit amet.
  *      responses:
  *        "201":
  *          description: Created
@@ -82,9 +83,9 @@ module.exports = router;
  *          $ref: '#/components/responses/Forbidden'
  *
  *    get:
- *      summary: Get all users
- *      description: Only admins can retrieve all users.
- *      tags: [Users]
+ *      summary: Get all theaters
+ *      description: Only admins can retrieve all theaters.
+ *      tags: [Theaters]
  *      security:
  *        - bearerAuth: []
  *      parameters:
@@ -93,11 +94,6 @@ module.exports = router;
  *          schema:
  *            type: string
  *          description: User name
- *        - in: query
- *          name: role
- *          schema:
- *            type: string
- *          description: User role
  *        - in: query
  *          name: sortBy
  *          schema:

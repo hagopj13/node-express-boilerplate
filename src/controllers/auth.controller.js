@@ -12,7 +12,22 @@ const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
+
+  const response = {
+    user: { data: { ...user, displayName: user.name, email: user.email }, role: user.role },
+    tokens
+  };
+  res.send(response);
+});
+
+
+const checkUser = catchAsync(async (req, res) => {
+  const user = req.user;
+
+  const response = {
+    user: { data: { ...user, displayName: user.name, email: user.email }, role: user.role },
+  };
+  res.send(response);
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
@@ -37,4 +52,5 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
+  checkUser
 };

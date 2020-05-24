@@ -37,10 +37,17 @@ const resetPassword = {
   }),
 };
 
+const checkToken = {
+  body: Joi.object().keys({
+    token: Joi.string(),
+  }),
+};
+
 module.exports = {
   register,
   login,
   refreshTokens,
   forgotPassword,
   resetPassword,
+  checkToken
 };
