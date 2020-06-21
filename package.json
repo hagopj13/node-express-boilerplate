@@ -59,7 +59,6 @@
     "helmet": "^3.21.2",
     "http-status": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongoose": "^5.7.7",
     "morgan": "^1.9.1",
