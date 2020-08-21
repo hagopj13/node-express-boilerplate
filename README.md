@@ -9,6 +9,20 @@ A boilerplate/starter project for quickly building production-ready RESTful APIs
 
 It comes with many built-in features, such as authentication using JWT, request validation, unit and integration tests, continuous integration, docker support, API documentation, pagination, etc. For more details about the features, check the list below.
 
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Error Handling](#error-handling)
+- [Validation](#validation)
+- [Authentication](#authentication)
+- [Authorization](#authorization)
+- [Logging](#logging)
+- [Custom Mongoose Plugins](#custom-mongoose-plugins)
+- [Linting](#linting)
+
 ## Features
 
 - **ES9**: latest ECMAScript features
@@ -289,7 +303,7 @@ Note: API request information (request url, response code, timestamp, etc.) are 
 
 ## Custom Mongoose Plugins
 
-The app also contains 2 custom mongoose plugins that you can attach to any mongoose model schema. You can find the plugins in `src/models/plugins.js`.
+The app also contains 2 custom mongoose plugins that you can attach to any mongoose model schema. You can find the plugins in `src/models/plugins`.
 
 ```javascript
 const mongoose = require('mongoose');
