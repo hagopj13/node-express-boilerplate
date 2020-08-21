@@ -16,6 +16,12 @@ const login = {
   }),
 };
 
+const logout = {
+  body: Joi.object().keys({
+    refreshToken: Joi.string().required(),
+  }),
+};
+
 const refreshTokens = {
   body: Joi.object().keys({
     refreshToken: Joi.string().required(),
@@ -40,6 +46,7 @@ const resetPassword = {
 module.exports = {
   register,
   login,
+  logout,
   refreshTokens,
   forgotPassword,
   resetPassword,

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
+router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
@@ -116,6 +117,33 @@ module.exports = router;
  *              example:
  *                code: 401
  *                message: Invalid email or password
+ */
+
+/**
+ * @swagger
+ * path:
+ *  /auth/logout:
+ *    post:
+ *      summary: Logout
+ *      tags: [Auth]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              required:
+ *                - refreshToken
+ *              properties:
+ *                refreshToken:
+ *                  type: string
+ *              example:
+ *                refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg
+ *      responses:
+ *        "204":
+ *          description: No content
+ *        "401":
+ *          $ref: '#/components/responses/Unauthorized'
  */
 
 /**
