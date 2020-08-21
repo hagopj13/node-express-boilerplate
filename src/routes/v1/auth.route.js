@@ -142,8 +142,8 @@ module.exports = router;
  *      responses:
  *        "204":
  *          description: No content
- *        "401":
- *          $ref: '#/components/responses/Unauthorized'
+ *        "404":
+ *          $ref: '#/components/responses/NotFound'
  */
 
 /**
