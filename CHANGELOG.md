@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.1](https://github.com/hagopj13/node-express-mongoose-boilerplate/compare/v1.4.0...v1.4.1) (2020-09-14)
+
+### Bug Fixes
+
+- upgrade mongoose to solve vulnerability issue ([1650bdf](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/1650bdf1bf36ce13597c0ed3503c7b4abef01ee5))
+- add type to token payloads ([eb5de2c](https://github.com/hagopj13/node-express-mongoose-boilerplate/commit/eb5de2c7523ac166ca933bff83ef1e87274f3478)), closes [#28](https://github.com/hagopj13/node-express-mongoose-boilerplate/issues/28)
+
 ## [1.4.0](https://github.com/hagopj13/node-express-mongoose-boilerplate/compare/v1.3.0...v1.4.0) (2020-08-22)
 
 ### Features
