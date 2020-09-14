@@ -5,6 +5,7 @@ const config = require('../config/config');
 const userService = require('./user.service');
 const { Token } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { tokenTypes } = require('../config/tokens');
 
 /**
  * Generate token
@@ -68,7 +69,7 @@ const generateAuthTokens = async (user) => {
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
   const refreshToken = generateToken(user.id, refreshTokenExpires);
-  await saveToken(refreshToken, user.id, refreshTokenExpires, 'refresh');
+  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
@@ -94,7 +95,7 @@ const generateResetPasswordToken = async (email) => {
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, expires);
-  await saveToken(resetPasswordToken, user.id, expires, 'resetPassword');
+  await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
 };
 
