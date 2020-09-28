@@ -348,11 +348,13 @@ The `options` param can have the following (optional) fields:
 
 ```javascript
 const options = {
-  sortBy: 'name:desc',
-  limit: 5,
-  page: 2,
+  sortBy: 'name:desc', // sort order
+  limit: 5, // maximum results per page
+  page: 2, // page number
 };
 ```
+
+The plugin also supports sorting by multiple criteria (separated by a comma): `sortBy: name:desc,role:asc`
 
 The `paginate` method returns a Promise, which fulfills with an object having the following properties:
 

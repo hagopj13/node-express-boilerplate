@@ -219,7 +219,7 @@ describe('User routes', () => {
       expect(res.body.results[1].id).toBe(userTwo._id.toHexString());
     });
 
-    test('should correctly sort returned array if descending sort param is specified', async () => {
+    test('should correctly sort the returned array if descending sort param is specified', async () => {
       await insertUsers([userOne, userTwo, admin]);
 
       const res = await request(app)
@@ -242,7 +242,7 @@ describe('User routes', () => {
       expect(res.body.results[2].id).toBe(admin._id.toHexString());
     });
 
-    test('should correctly sort returned array if ascending sort param is specified', async () => {
+    test('should correctly sort the returned array if ascending sort param is specified', async () => {
       await insertUsers([userOne, userTwo, admin]);
 
       const res = await request(app)
@@ -263,6 +263,40 @@ describe('User routes', () => {
       expect(res.body.results[0].id).toBe(admin._id.toHexString());
       expect(res.body.results[1].id).toBe(userOne._id.toHexString());
       expect(res.body.results[2].id).toBe(userTwo._id.toHexString());
+    });
+
+    test('should correctly sort the returned array if multiple sorting criteria are specified', async () => {
+      await insertUsers([userOne, userTwo, admin]);
+
+      const res = await request(app)
+        .get('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .query({ sortBy: 'role:desc,name:asc' })
+        .send()
+        .expect(httpStatus.OK);
+
+      expect(res.body).toEqual({
+        results: expect.any(Array),
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+        totalResults: 3,
+      });
+      expect(res.body.results).toHaveLength(3);
+
+      const expectedOrder = [userOne, userTwo, admin].sort((a, b) => {
+        if (a.role < b.role) {
+          return 1;
+        }
+        if (a.role > b.role) {
+          return -1;
+        }
+        return a.name < b.name ? -1 : 1;
+      });
+
+      expectedOrder.forEach((user, index) => {
+        expect(res.body.results[index].id).toBe(user._id.toHexString());
+      });
     });
 
     test('should limit returned array if limit param is specified', async () => {
