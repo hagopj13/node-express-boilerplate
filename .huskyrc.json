@@ -2,6 +2,7 @@
   "hooks": {
     "post-checkout": "yarn",
     "pre-commit": "lint-staged",
+    "pre-push": "yarn lint:fix && yarn prettier:fix",
     "post-commit": "git status"
   }
 }
