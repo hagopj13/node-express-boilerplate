@@ -47,7 +47,6 @@
     "prettier"
   ],
   "dependencies": {
-    "@hapi/joi": "^17.1.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -58,6 +57,7 @@
     "express-rate-limit": "^5.0.0",
     "helmet": "^4.1.0",
     "http-status": "^1.4.0",
+    "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.7",
