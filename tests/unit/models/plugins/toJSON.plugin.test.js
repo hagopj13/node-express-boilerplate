@@ -46,6 +46,25 @@ describe('toJSON plugin', () => {
     expect(doc.toJSON()).toHaveProperty('public');
   });
 
+  it('should remove any nested paths set as private', () => {
+    const schema = mongoose.Schema({
+      public: { type: String },
+      nested: {
+        private: { type: String, private: true },
+      },
+    });
+    schema.plugin(toJSON);
+    const Model = connection.model('Model', schema);
+    const doc = new Model({
+      public: 'some public value',
+      nested: {
+        private: 'some nested private value',
+      },
+    });
+    expect(doc.toJSON()).not.toHaveProperty('nested.private');
+    expect(doc.toJSON()).toHaveProperty('public');
+  });
+
   it('should also call the schema toJSON transform function', () => {
     const schema = mongoose.Schema(
       {
