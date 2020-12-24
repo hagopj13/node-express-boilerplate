@@ -66,8 +66,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pm2": "^4.1.2",
-    "swagger-jsdoc": "^4.0.0",
-    "swagger-ui-express": "^4.1.4",
+    "swagger-jsdoc": "4.2.0",
+    "swagger-ui-express": "4.1.4",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1"
@@ -76,7 +76,7 @@
     "coveralls": "^3.0.7",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.4.0",
+    "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^24.0.1",
     "eslint-plugin-prettier": "^3.1.1",
@@ -88,6 +88,6 @@
     "node-mocks-http": "^1.8.0",
     "nodemon": "^2.0.0",
     "prettier": "^2.0.5",
-    "supertest": "^4.0.2"
+    "supertest": "^6.0.1"
   }
 }
