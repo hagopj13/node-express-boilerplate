@@ -4,7 +4,7 @@
   "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
-  "repository": "https://github.com/hagopj13/node-express-mongoose-boilerplate.git",
+  "repository": "https://github.com/hagopj13/node-express-boilerplate.git",
   "author": "Hagop Jamkojian <hagopj13@gmail.com>",
   "license": "MIT",
   "engines": {
