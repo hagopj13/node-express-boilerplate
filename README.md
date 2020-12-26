@@ -146,7 +146,7 @@ yarn prettier
 yarn prettier:fix
 ```
 
-## Enivornment Variables
+## Environment Variables
 
 The environment variables can be found and modified in the `.env` file. They come with these default values:
 
