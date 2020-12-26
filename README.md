@@ -348,7 +348,6 @@ The `options` param can have the following (optional) fields:
 
 ```javascript
 const options = {
-  populate: 'manager', //populate manager
   sortBy: 'name:desc', // sort order
   limit: 5, // maximum results per page
   page: 2, // page number

@@ -343,24 +343,6 @@ describe('User routes', () => {
     });
   });
 
-  test('should return the populated managers', async () => {
-    await insertUsers([admin]);
-    await insertUsers([
-      { ...userOne, manager: admin._id },
-      { ...userTwo, manager: admin._id },
-    ]);
-
-    const res = await request(app)
-      .get('/v1/users')
-      .set('Authorization', `Bearer ${adminAccessToken}`)
-      .query({ populate: 'manager' })
-      .send()
-      .expect(httpStatus.OK);
-
-    expect(res.body.results[1].manager.id).toBe(admin._id.toHexString());
-    expect(res.body.results[2].manager.id).toBe(admin._id.toHexString());
-  });
-
   describe('GET /v1/users/:userId', () => {
     test('should return 200 and the user object if data is ok', async () => {
       await insertUsers([userOne]);
