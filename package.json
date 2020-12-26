@@ -1,7 +1,7 @@
 {
   "name": "create-nodejs-express-app",
   "version": "1.5.0",
-  "description": "A boilerplate for building production-ready RESTful APIs using Node.js, Express, and Mongoose",
+  "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
   "repository": "https://github.com/hagopj13/node-express-mongoose-boilerplate.git",
