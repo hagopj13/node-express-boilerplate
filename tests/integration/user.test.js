@@ -56,7 +56,7 @@ describe('User routes', () => {
       expect(dbUser.role).toBe('admin');
     });
 
-    test('should return 401 error is access token is missing', async () => {
+    test('should return 401 error if access token is missing', async () => {
       await request(app).post('/v1/users').send(newUser).expect(httpStatus.UNAUTHORIZED);
     });
 
