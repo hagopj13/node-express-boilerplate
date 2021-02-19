@@ -32,12 +32,18 @@ describe('User routes', () => {
         .expect(httpStatus.CREATED);
 
       expect(res.body).not.toHaveProperty('password');
-      expect(res.body).toEqual({ id: expect.anything(), name: newUser.name, email: newUser.email, role: newUser.role });
+      expect(res.body).toEqual({
+        id: expect.anything(),
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        isEmailVarified: false,
+      });
 
       const dbUser = await User.findById(res.body.id);
       expect(dbUser).toBeDefined();
       expect(dbUser.password).not.toBe(newUser.password);
-      expect(dbUser).toMatchObject({ name: newUser.name, email: newUser.email, role: newUser.role });
+      expect(dbUser).toMatchObject({ name: newUser.name, email: newUser.email, role: newUser.role, isEmailVarified: false });
     });
 
     test('should be able to create an admin as well', async () => {
@@ -157,6 +163,7 @@ describe('User routes', () => {
         name: userOne.name,
         email: userOne.email,
         role: userOne.role,
+        isEmailVarified: false,
       });
     });
 
@@ -359,6 +366,7 @@ describe('User routes', () => {
         email: userOne.email,
         name: userOne.name,
         role: userOne.role,
+        isEmailVarified: false,
       });
     });
 
@@ -491,6 +499,7 @@ describe('User routes', () => {
         name: updateBody.name,
         email: updateBody.email,
         role: 'user',
+        isEmailVarified: false,
       });
 
       const dbUser = await User.findById(userOne._id);
