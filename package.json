@@ -13,7 +13,6 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "dev:debug": "nodemon --inspect-brk=5858 src/index.js",
     "test": "jest -i --colors --testEnvironment=node --verbose --coverage --detectOpenHandles",
     "test:watch": "jest -i --watchAll",
     "coverage": "jest -i --coverage",

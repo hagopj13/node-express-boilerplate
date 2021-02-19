@@ -257,3 +257,62 @@ module.exports = router;
  *                code: 401
  *                message: Password reset failed
  */
+
+/**
+ * @swagger
+ * path:
+ *  /auth/verification-email:
+ *    post:
+ *      summary: verification-email Email
+ *      description: An email will be sent to verify email.
+ *      tags: [Auth]
+ *      security:
+ *        - bearerAuth: []
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              required:
+ *                - email
+ *              properties:
+ *                email:
+ *                  type: string
+ *                  format: email
+ *              example:
+ *                email: fake@example.com
+ *      responses:
+ *        "204":
+ *          description: No content
+ *        "404":
+ *          $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * path:
+ *  /auth/verify-email:
+ *    post:
+ *      summary: verify email
+ *      tags: [Auth]
+ *      parameters:
+ *        - in: query
+ *          name: token
+ *          required: true
+ *          schema:
+ *            type: string
+ *          description: The verify email token
+ *      responses:
+ *        "204":
+ *          description: No content
+ *        "401":
+ *          description: verify email failed
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Error'
+ *              example:
+ *                code: 401
+ *                message: verify email failed
+ */

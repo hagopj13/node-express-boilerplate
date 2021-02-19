@@ -7,11 +7,28 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via Yarn",
-            "runtimeExecutable": "yarn",
-            "cwd": "${workspaceFolder}",
-            "runtimeArgs": ["start:debug"],
-            "port": 5858
-        }
+            "name": "nodemon",
+            "runtimeExecutable": "nodemon",
+            "program": "${workspaceFolder}/app.js",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "Launch via Yarn",
+        //     "runtimeExecutable": "yarn",
+        //     "cwd": "${workspaceFolder}",
+        //     "runtimeArgs": ["start:debug"],
+        //     "port": 5858
+        // }
+    
     ]
 }
