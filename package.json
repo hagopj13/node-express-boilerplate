@@ -1,6 +1,6 @@
 {
   "name": "create-nodejs-express-app",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
