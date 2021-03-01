@@ -2,10 +2,10 @@
 const util = require('util');
 const path = require('path');
 const fs = require('fs');
-const { execSync } = require('child_process')
+const { execSync } = require('child_process');
 
 // Utility functions
-const exec = util.promisify(require("child_process").exec);
+const exec = util.promisify(require('child_process').exec);
 async function runCmd(command) {
   try {
     const { stdout, stderr } = await exec(command);
@@ -78,7 +78,7 @@ async function setup() {
     console.log();
 
     // Copy envornment variables
-    fs.copyFileSync(path.join(appPath, '.env.example'), path.join(appPath, '.env'))
+    fs.copyFileSync(path.join(appPath, '.env.example'), path.join(appPath, '.env'));
     console.log('Environment files copied.');
 
     // Delete .git folder
