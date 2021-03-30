@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable prettier/prettier */
 const Joi = require('joi');
 const { password } = require('./custom.validation');
 
@@ -45,16 +43,12 @@ const resetPassword = {
   }),
 };
 
-const verificationEmail = {
-  body: Joi.object().keys({
-    email: Joi.string().required(),
-  })
-};
 const verifyEmail = {
   query: Joi.object().keys({
     token: Joi.string().required(),
-  })
+  }),
 };
+
 module.exports = {
   register,
   login,
@@ -62,6 +56,5 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
-  verificationEmail,
   verifyEmail,
 };

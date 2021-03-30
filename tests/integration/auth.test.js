@@ -13,7 +13,7 @@ const setupTestDB = require('../utils/setupTestDB');
 const { User, Token } = require('../../src/models');
 const { roleRights } = require('../../src/config/roles');
 const { tokenTypes } = require('../../src/config/tokens');
-const { userOne, admin, insertUsers, userTwo } = require('../fixtures/user.fixture');
+const { userOne, admin, insertUsers } = require('../fixtures/user.fixture');
 const { userOneAccessToken, adminAccessToken } = require('../fixtures/token.fixture');
 
 setupTestDB();
@@ -243,11 +243,7 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const sendResetPasswordEmailSpy = jest.spyOn(emailService, 'sendResetPasswordEmail');
 
-      await request(app)
-        .post('/v1/auth/forgot-password')
-        .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send({ email: userOne.email })
-        .expect(httpStatus.NO_CONTENT);
+      await request(app).post('/v1/auth/forgot-password').send({ email: userOne.email }).expect(httpStatus.NO_CONTENT);
 
       expect(sendResetPasswordEmailSpy).toHaveBeenCalledWith(userOne.email, expect.any(String));
       const resetPasswordToken = sendResetPasswordEmailSpy.mock.calls[0][1];
@@ -358,49 +354,32 @@ describe('Auth routes', () => {
         .expect(httpStatus.BAD_REQUEST);
     });
   });
-  describe('POST /v1/auth/verification-email', () => {
+
+  describe('POST /v1/auth/send-verification-email', () => {
     beforeEach(() => {
       jest.spyOn(emailService.transport, 'sendMail').mockResolvedValue();
     });
 
     test('should return 204 and send verification email to the user', async () => {
       await insertUsers([userOne]);
-      const sendVerificationEmaillSpy = jest.spyOn(emailService, 'sendVerificationEmail');
+      const sendVerificationEmailSpy = jest.spyOn(emailService, 'sendVerificationEmail');
 
       await request(app)
-        .post('/v1/auth/verification-email')
+        .post('/v1/auth/send-verification-email')
         .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send({ email: userOne.email })
         .expect(httpStatus.NO_CONTENT);
 
-      expect(sendVerificationEmaillSpy).toHaveBeenCalledWith(userOne.email, expect.any(String));
-      const VerificationEmailToken = sendVerificationEmaillSpy.mock.calls[0][1];
-      const dbVerificationEmailTokenDoc = await Token.findOne({ token: VerificationEmailToken, user: userOne._id });
+      expect(sendVerificationEmailSpy).toHaveBeenCalledWith(userOne.email, expect.any(String));
+      const verifyEmailToken = sendVerificationEmailSpy.mock.calls[0][1];
+      const dbVerifyEmailToken = await Token.findOne({ token: verifyEmailToken, user: userOne._id });
 
-      expect(dbVerificationEmailTokenDoc).toBeDefined();
+      expect(dbVerifyEmailToken).toBeDefined();
     });
 
-    test('should return 400 if email is missing', async () => {
-      await insertUsers([userOne]);
-
-      await request(app)
-        .post('/v1/auth/verification-email')
-        .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send()
-        .expect(httpStatus.BAD_REQUEST);
-    });
-    test('should return 404 if email does not belong to any user', async () => {
-      await insertUsers([userOne]);
-      await request(app)
-        .post('/v1/auth/verification-email')
-        .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send({ email: userTwo.email })
-        .expect(httpStatus.NOT_FOUND);
-    });
     test('should return 401 error if access token is missing', async () => {
       await insertUsers([userOne]);
 
-      await request(app).post('/v1/auth/verification-email').send({ email: userOne.email }).expect(httpStatus.UNAUTHORIZED);
+      await request(app).post('/v1/auth/send-verification-email').send().expect(httpStatus.UNAUTHORIZED);
     });
   });
 
@@ -408,12 +387,12 @@ describe('Auth routes', () => {
     test('should return 204 and verify the email', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-      const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
+      const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
-        .query({ token: verificationEmailToken })
+        .query({ token: verifyEmailToken })
         .send()
         .expect(httpStatus.NO_CONTENT);
 
@@ -421,53 +400,53 @@ describe('Auth routes', () => {
 
       expect(dbUser.isEmailVerified).toBe(true);
 
-      const dbVerificationEmailTokenCount = await Token.countDocuments({
+      const dbVerifyEmailToken = await Token.countDocuments({
         user: userOne._id,
         type: tokenTypes.VERIFY_EMAIL,
       });
-      expect(dbVerificationEmailTokenCount).toBe(0);
+      expect(dbVerifyEmailToken).toBe(0);
     });
 
-    test('should return 400 if email verification token is missing', async () => {
+    test('should return 400 if verify email token is missing', async () => {
       await insertUsers([userOne]);
 
       await request(app).post('/v1/auth/verify-email').send().expect(httpStatus.BAD_REQUEST);
     });
 
-    test('should return 401 if verification email token is blacklisted', async () => {
+    test('should return 401 if verify email token is blacklisted', async () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-      const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL, true);
+      const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL, true);
 
       await request(app)
         .post('/v1/auth/verify-email')
-        .query({ token: verificationEmailToken })
+        .query({ token: verifyEmailToken })
         .send()
         .expect(httpStatus.UNAUTHORIZED);
     });
 
-    test('should return 401 if email verification token is expired', async () => {
+    test('should return 401 if verify email token is expired', async () => {
       await insertUsers([userOne]);
       const expires = moment().subtract(1, 'minutes');
-      const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
+      const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
-        .query({ token: verificationEmailToken })
+        .query({ token: verifyEmailToken })
         .send()
         .expect(httpStatus.UNAUTHORIZED);
     });
 
     test('should return 401 if user is not found', async () => {
       const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-      const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
+      const verifyEmailToken = tokenService.generateToken(userOne._id, expires);
+      await tokenService.saveToken(verifyEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
-        .query({ token: verificationEmailToken })
+        .query({ token: verifyEmailToken })
         .send()
         .expect(httpStatus.UNAUTHORIZED);
     });
