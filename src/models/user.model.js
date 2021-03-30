@@ -40,6 +40,10 @@ const userSchema = mongoose.Schema(
       enum: roles,
       default: 'user',
     },
+    isEmailVarified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
