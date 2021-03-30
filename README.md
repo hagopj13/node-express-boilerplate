@@ -67,7 +67,6 @@ cp .env.example .env
 
 ## Features
 
-- **ES9**: latest ECMAScript features
 - **NoSQL database**: [MongoDB](https://www.mongodb.com) object data modeling using [Mongoose](https://mongoosejs.com)
 - **Authentication and authorization**: using [passport](http://www.passportjs.org)
 - **Validation**: request data validation using [Joi](https://github.com/hapijs/joi)
@@ -204,7 +203,9 @@ List of available routes:
 `POST /v1/auth/login` - login\
 `POST /v1/auth/refresh-tokens` - refresh auth tokens\
 `POST /v1/auth/forgot-password` - send reset password email\
-`POST /v1/auth/reset-password` - reset password
+`POST /v1/auth/reset-password` - reset password\
+`POST /v1/auth/send-verification-email` - send verification email\
+`POST /v1/auth/verify-email` - verify email
 
 **User routes**:\
 `POST /v1/users` - create a user\
