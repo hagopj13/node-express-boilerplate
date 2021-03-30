@@ -77,12 +77,12 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
  */
 const verifyEmail = async (emailVarificationToken) => {
   try {
-    const emailVarificationTokenDoc = await tokenService.verifyToken(emailVarificationToken, tokenTypes.VERIFICATION_EMAIL);
+    const emailVarificationTokenDoc = await tokenService.verifyToken(emailVarificationToken, tokenTypes.VERIFY_EMAIL);
     const user = await userService.getUserById(emailVarificationTokenDoc.user);
     if (!user) {
       throw new Error();
     }
-    await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFICATION_EMAIL });
+    await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
     await userService.updateUserById(user.id, { isEmailVarified: true });
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'email verification failed');

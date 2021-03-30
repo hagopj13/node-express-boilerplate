@@ -407,9 +407,9 @@ describe('Auth routes', () => {
   describe('POST /v1/auth/verify-email', () => {
     test('should return 204 and verify the email', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.verificationEmailExpirationMinutes, 'minutes');
+      const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
       const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFICATION_EMAIL);
+      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -423,7 +423,7 @@ describe('Auth routes', () => {
 
       const dbVerificationEmailTokenCount = await Token.countDocuments({
         user: userOne._id,
-        type: tokenTypes.VERIFICATION_EMAIL,
+        type: tokenTypes.VERIFY_EMAIL,
       });
       expect(dbVerificationEmailTokenCount).toBe(0);
     });
@@ -436,9 +436,9 @@ describe('Auth routes', () => {
 
     test('should return 401 if verification email token is blacklisted', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.verificationEmailExpirationMinutes, 'minutes');
+      const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
       const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFICATION_EMAIL, true);
+      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL, true);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -451,7 +451,7 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const expires = moment().subtract(1, 'minutes');
       const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFICATION_EMAIL);
+      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')
@@ -461,9 +461,9 @@ describe('Auth routes', () => {
     });
 
     test('should return 401 if user is not found', async () => {
-      const expires = moment().add(config.jwt.verificationEmailExpirationMinutes, 'minutes');
+      const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
       const verificationEmailToken = tokenService.generateToken(userOne._id, expires);
-      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFICATION_EMAIL);
+      await tokenService.saveToken(verificationEmailToken, userOne._id, expires, tokenTypes.VERIFY_EMAIL);
 
       await request(app)
         .post('/v1/auth/verify-email')

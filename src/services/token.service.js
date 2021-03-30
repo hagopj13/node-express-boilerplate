@@ -104,9 +104,9 @@ const generateVerificationEmailToken = async (email) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
   }
-  const expires = moment().add(config.jwt.verificationEmailExpirationMinutes, 'minutes');
+  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verificationEmailToken = generateToken(user.id, expires);
-  await saveToken(verificationEmailToken, user.id, expires, tokenTypes.VERIFICATION_EMAIL);
+  await saveToken(verificationEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
   return verificationEmailToken;
 };
 module.exports = {

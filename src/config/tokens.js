@@ -2,7 +2,7 @@ const tokenTypes = {
   ACCESS: 'access',
   REFRESH: 'refresh',
   RESET_PASSWORD: 'resetPassword',
-  VERIFICATION_EMAIL: 'verificationEmail',
+  VERIFY_EMAIL: 'verifyEmail',
 };
 
 module.exports = {
