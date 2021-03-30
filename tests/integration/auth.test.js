@@ -97,7 +97,7 @@ describe('Auth routes', () => {
         name: userOne.name,
         email: userOne.email,
         role: userOne.role,
-        isEmailVerified: false,
+        isEmailVerified: userOne.isEmailVerified,
       });
 
       expect(res.body.tokens).toEqual({

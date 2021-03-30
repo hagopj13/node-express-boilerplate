@@ -163,7 +163,7 @@ describe('User routes', () => {
         name: userOne.name,
         email: userOne.email,
         role: userOne.role,
-        isEmailVerified: false,
+        isEmailVerified: userOne.isEmailVerified,
       });
     });
 
@@ -366,7 +366,7 @@ describe('User routes', () => {
         email: userOne.email,
         name: userOne.name,
         role: userOne.role,
-        isEmailVerified: false,
+        isEmailVerified: userOne.isEmailVerified,
       });
     });
 
