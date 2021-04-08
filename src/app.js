@@ -12,6 +12,7 @@ const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
+const { httplogger } = require('./middlewares/http-logger');
 const ApiError = require('./utils/ApiError');
 
 const app = express();
@@ -20,7 +21,8 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
-
+// log per req info
+app.use(httplogger);
 // set security HTTP headers
 app.use(helmet());
 

@@ -72,7 +72,9 @@
     "swagger-ui-express": "^4.1.6",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.1",
+    "on-finished": "^2.3.0",
+    "on-headers": "^1.0.2"
   },
   "devDependencies": {
     "coveralls": "^3.0.7",
