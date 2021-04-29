@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const objectId = (value, helpers) => {
   if (!value.match(/^[0-9a-fA-F]{24}$/)) {
     return helpers.message('"{{#label}}" must be a valid mongo id');
@@ -15,7 +17,19 @@ const password = (value, helpers) => {
   return value;
 };
 
+const facebookToken = (value, helpers) => {
+  axios.get(`https://graph.facebook.com/v10.0/me?access_token=${value}`)
+    .then(response => {
+        const { data } = response;
+        if (data.error) 
+        {
+          return helpers.message('invalid facebook access token');
+        }});
+  return value;
+};
+
 module.exports = {
   objectId,
   password,
+  facebookToken
 };

@@ -4,6 +4,7 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const axios = require('axios');
 
 /**
  * Login with username and password
@@ -19,6 +20,20 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   return user;
 };
 
+const loginUserWithFacebookToken = async (facebookId, facebookToken) => {
+  const user = await userService.getUserByFacebookId(facebookId);
+  const facebookUser = await getFacebookIdFromToken(facebookToken);
+  if (!user || !(user.facebookId == facebookUser.id)) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'UserId doesnt match');
+  }
+  return user;
+};
+
+const getFacebookIdFromToken = async (accessToken) => {
+  const res = await axios.get(`https://graph.facebook.com/v10.0/me?access_token=${accessToken}`);
+  console.log(res);
+  return res.data;
+};
 /**
  * Logout
  * @param {string} refreshToken
@@ -51,49 +66,9 @@ const refreshAuth = async (refreshToken) => {
   }
 };
 
-/**
- * Reset password
- * @param {string} resetPasswordToken
- * @param {string} newPassword
- * @returns {Promise}
- */
-const resetPassword = async (resetPasswordToken, newPassword) => {
-  try {
-    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
-    if (!user) {
-      throw new Error();
-    }
-    await userService.updateUserById(user.id, { password: newPassword });
-    await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
-  } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
-  }
-};
-
-/**
- * Verify email
- * @param {string} verifyEmailToken
- * @returns {Promise}
- */
-const verifyEmail = async (verifyEmailToken) => {
-  try {
-    const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
-    const user = await userService.getUserById(verifyEmailTokenDoc.user);
-    if (!user) {
-      throw new Error();
-    }
-    await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
-    await userService.updateUserById(user.id, { isEmailVerified: true });
-  } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
-  }
-};
-
 module.exports = {
   loginUserWithEmailAndPassword,
+  loginUserWithFacebookToken,
   logout,
-  refreshAuth,
-  resetPassword,
-  verifyEmail,
+  refreshAuth
 };

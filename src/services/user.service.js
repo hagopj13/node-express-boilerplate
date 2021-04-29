@@ -8,8 +8,8 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+  if (await User.accountAlreadyExist(userBody.facebookId)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Account already exist');
   }
   const user = await User.create(userBody);
   return user;
@@ -45,6 +45,19 @@ const getUserById = async (id) => {
  */
 const getUserByEmail = async (email) => {
   return User.findOne({ email });
+};
+
+/**
+ * Get user by InstagramId
+ * @param {string} InstagramId
+ * @returns {Promise<User>}
+ */
+ const getUserByInstagramId = async (instagramAccountId) => {
+  return User.findOne({ instagramAccountId });
+};
+
+const getUserByFacebookId = async (facebookId) => {
+  return User.findOne({ facebookId });
 };
 
 /**
@@ -85,6 +98,8 @@ module.exports = {
   queryUsers,
   getUserById,
   getUserByEmail,
+  getUserByFacebookId,
+  getUserByInstagramId,
   updateUserById,
   deleteUserById,
 };
