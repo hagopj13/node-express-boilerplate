@@ -394,9 +394,12 @@ The `options` param can have the following (optional) fields:
 
 ```javascript
 const options = {
-  sortBy: 'name:desc', // sort order
-  limit: 5, // maximum results per page
-  page: 2, // page number
+  select: 'title date author',
+  sort: { date: -1 },
+  populate: 'author',
+  lean: true,
+  offset: 20,
+  limit: 10,
 };
 ```
 
@@ -413,6 +416,7 @@ The `paginate` method returns a Promise, which fulfills with an object having th
   "totalResults": 48
 }
 ```
+Futher Documentation on how to use it can be found here [Mongoose Paginate](https://www.npmjs.com/package/mongoose-paginate-v2)
 
 ## Linting
 
