@@ -31,7 +31,6 @@ const loginUserWithFacebookToken = async (facebookId, facebookToken) => {
 
 const getFacebookIdFromToken = async (accessToken) => {
   const res = await axios.get(`https://graph.facebook.com/v10.0/me?access_token=${accessToken}`);
-  console.log(res);
   return res.data;
 };
 /**
