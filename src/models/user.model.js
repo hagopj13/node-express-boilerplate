@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const Resource = require('./resource.model');
 
 const userSchema = mongoose.Schema(
   {
@@ -26,6 +27,17 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: roles,
       default: 'user',
+    },
+    resource: {
+      type: [Resource],
+      default: []
+    },
+    blockchainData:{
+      data:{
+        type: mongoose.Schema.Types.Mixed
+      },
+      publicKey: [Number]
+      
     }
   },
   {

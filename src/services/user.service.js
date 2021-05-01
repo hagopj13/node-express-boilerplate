@@ -1,7 +1,8 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
-
+const resourceState = require('../config/resourceStates');
+const blockchainService = require('./blockchain.service');
 /**
  * Create a user
  * @param {Object} userBody
@@ -10,6 +11,21 @@ const ApiError = require('../utils/ApiError');
 const createUser = async (userBody) => {
   if (await User.accountAlreadyExist(userBody.facebookId)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Account already exist');
+  }
+  const { pair, mnemonic } = await blockchainService.createPair();
+  const data = {
+    address: pair.address.toString(),
+    meta: pair.meta,
+    type: pair.type.toString(),
+    mnemonic: mnemonic,
+  }
+  const pk = [];
+  pair.publicKey.forEach(element => {
+    pk.push(element);
+  });
+  userBody.blockchainData = {
+    data: data,
+    publicKey: pk
   }
   const user = await User.create(userBody);
   return user;
@@ -79,6 +95,44 @@ const updateUserById = async (userId, updateBody) => {
   return user;
 };
 
+const addImportedResourceForUserById = async (userId, updatedImportedResourceBody) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  // proper quadratic algo lol
+  updatedImportedResourceBody.forEach(element => {
+    let flag = true;
+    for(let i = 0; i < user.resource.length; i++){
+      // dont add if already present
+      if(user.resource[i].resourceUrl === element.resourceUrl){
+        flag = false;
+        break;
+      }
+    }
+    if(flag)
+      user.resource.push(element);
+  });
+  await user.save();
+  return user;
+};
+// just use the filter in UI to show these things
+const updateResourceStateForUserById = async (userId, resourceUrl, newState) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  let i = 0;
+  for(i=0; i < user.resource.length; i++){
+    if(user.resource[i].resourceUrl === resourceUrl){
+      user.resource[i].state = newState;
+      break;
+    }
+  }
+  
+  await user.save();
+  return user;
+};
 /**
  * Delete user by id
  * @param {ObjectId} userId
@@ -102,4 +156,6 @@ module.exports = {
   getUserByInstagramId,
   updateUserById,
   deleteUserById,
+  addImportedResourceForUserById,
+  updateResourceStateForUserById
 };

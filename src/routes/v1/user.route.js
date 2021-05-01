@@ -17,6 +17,14 @@ router
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
+router
+  .route('/:userId/addResource')
+  .post(auth('manageUsers'),validate(userValidation.addImportedResources), userController.addImportedResources);
+
+router
+  .route('/:userId/updateResourceState')
+  .post(auth('manageUsers'),validate(userValidation.updateStateForResource), userController.updateStateForResource);
+
 module.exports = router;
 
 /**

@@ -45,10 +45,24 @@ const deleteUser = {
   }),
 };
 
+const addImportedResources = {
+  params: Joi.object().keys({
+    userId: Joi.required().custom(objectId),
+  })
+}
+
+const updateStateForResource = {
+  params: Joi.object().keys({
+    userId: Joi.required().custom(objectId),
+  })
+}
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  addImportedResources,
+  updateStateForResource
 };

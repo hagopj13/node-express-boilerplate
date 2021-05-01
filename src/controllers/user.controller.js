@@ -9,6 +9,18 @@ const createUser = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(user);
 });
 
+const addImportedResources = catchAsync(async (req, res) => {
+  const user = await userService.addImportedResourceForUserById(req.params.userId,req.body);
+  res.status(httpStatus.ACCEPTED).send(user);
+});
+
+const updateStateForResource = catchAsync(async (req, res) => {
+  const body = req.body;
+  const user = await userService.updateResourceStateForUserById(req.params.userId,body.resourceUrl,
+    body.newState);
+  res.status(httpStatus.ACCEPTED).send(user);
+});
+
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -40,4 +52,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  addImportedResources,
+  updateStateForResource
 };
