@@ -43,7 +43,7 @@ describe('paginate plugin', () => {
 
       const taskPages = await Task.paginate({ _id: task._id }, { populate: 'project' });
 
-      expect(taskPages.results[0].project).toHaveProperty('_id', project._id);
+      expect(taskPages.docs[0].project).toHaveProperty('_id', project._id);
     });
 
     test('should populate nested fields', async () => {
