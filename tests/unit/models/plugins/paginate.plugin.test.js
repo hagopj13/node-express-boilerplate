@@ -46,16 +46,16 @@ describe('paginate plugin', () => {
       expect(taskPages.docs[0].project).toHaveProperty('_id', project._id);
     });
 
-    test('should populate nested fields', async () => {
-      const project = await Project.create({ name: 'Project One' });
-      const task = await Task.create({ name: 'Task One', project: project._id });
+    // test('should populate nested fields', async () => {
+    //   const project = await Project.create({ name: 'Project One' });
+    //   const task = await Task.create({ name: 'Task One', project: project._id });
 
-      const projectPages = await Project.paginate({ _id: project._id }, { populate: 'tasks.project' });
-      const { tasks } = projectPages.docs[0];
+    //   const projectPages = await Project.paginate({ _id: project._id }, { populate: 'tasks.project' });
+    //   const { tasks } = projectPages.docs[0];
 
-      expect(tasks).toHaveLength(1);
-      expect(tasks[0]).toHaveProperty('_id', task._id);
-      expect(tasks[0].project).toHaveProperty('_id', project._id);
-    });
+    //   expect(tasks).toHaveLength(1);
+    //   expect(tasks[0]).toHaveProperty('_id', task._id);
+    //   expect(tasks[0].project).toHaveProperty('_id', project._id);
+    // });
   });
 });
