@@ -13,6 +13,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const path = require("path");
 
 const app = express();
 
@@ -21,8 +22,14 @@ if (config.env !== 'test') {
   app.use(morgan.errorHandler);
 }
 
+// disabling constent security policy because it was failing run in browser
+// for index.html. it has script block which comes from webpack mostly
+// so need to look into it and add a nonce and hash value
+// for now just going ahead with this
 // set security HTTP headers
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 
 // parse json request body
 app.use(express.json());
@@ -49,6 +56,13 @@ passport.use('jwt', jwtStrategy);
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
+
+// Serve any static files built by React
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
 
 // v1 api routes
 app.use('/v1', routes);
