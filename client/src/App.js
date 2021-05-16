@@ -5,8 +5,12 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Login from './Login';
-import Register from './Register';
+import Login from './components/Login';
+import Register from './components/Register';
+import Home from './components/Home';
+import Explore from './components/Explore';
+import Profile from './components/Profile';
+import Logout from './components/Logout';
 
 export default function App() {
   return (
@@ -21,6 +25,9 @@ export default function App() {
               <Link to="/login">Login</Link>
             </li>
             <li>
+              <Link to="/logout">Logout</Link>
+            </li>
+            <li>
               <Link to="/register">Register</Link>
             </li>
           </ul>
@@ -32,8 +39,17 @@ export default function App() {
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="/logout">
+            <Logout />
+          </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/explore">
+            <Explore />
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/">
             <Home />
@@ -42,8 +58,4 @@ export default function App() {
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
 }
