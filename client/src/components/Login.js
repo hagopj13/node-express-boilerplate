@@ -2,24 +2,22 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { Redirect, useHistory, Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
+
 import {
   setIsLoggedInFlag, setFacebookToken, setBackendToken,
   selectIsLoggedInFlag, selectFacebookToken, selectBackendToken,
 } from '../features/token/tokenSlice';
+import {
+  setFacebookId, setId, setName, setAddress,
+} from '../features/user/userSlice';
+import {
+  setData,
+} from '../features/resource/resourceSlice';
+
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 
-import {
-  setFacebookId, setId, setName, setAddress,
-  selectFacebookId, selectId, selectName, selectAddress
-} from '../features/user/userSlice';
-
-import {
-  setData,
-  selectData
-} from '../features/resource/resourceSlice';
-
-export default function Login(props) {
+export default function Login() {
   let history = useHistory();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedInFlag);
@@ -67,7 +65,7 @@ export default function Login(props) {
 
   if (isLoggedIn) {
     return (
-      <Container>
+      <Container style={{ justifyContent: 'center' }}>
         <h2>Login successful</h2>
         <Button variant="contained" color="primary" component={RouterLink} to="/">
           Click here to go to home
@@ -77,10 +75,10 @@ export default function Login(props) {
   }
   else {
     return (
-      <Container>
+      <Container style={{ justifyContent: 'center' }}>
         <p>{error}</p>
         <Button variant="contained" color="primary" onClick={login}>
-          Click here to Login
+          LOGIN WITH FB
         </Button>
       </Container>
     );
