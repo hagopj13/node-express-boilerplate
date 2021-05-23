@@ -32,13 +32,7 @@ const userSchema = mongoose.Schema(
       type: [Resource],
       default: []
     },
-    blockchainData:{
-      data:{
-        type: mongoose.Schema.Types.Mixed
-      },
-      publicKey: [Number]
-      
-    }
+    address: String
   },
   {
     timestamps: true,
@@ -62,7 +56,7 @@ userSchema.statics.accountAlreadyExist = async function (facebookId, excludeUser
 
 userSchema.pre('save', async function (next) {
   const user = this;
-  console.log("Before save logging : "+ user.facebookId);
+  console.log("Before save logging : " + user.facebookId);
   next();
 });
 

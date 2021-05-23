@@ -1,8 +1,8 @@
 const httpStatus = require('http-status');
-const { User } = require('../models');
+const { User, Address } = require('../models');
 const ApiError = require('../utils/ApiError');
 const resourceState = require('../config/resourceStates');
-const blockchainService = require('./blockchain.service');
+const addressService = require('./address.service');
 /**
  * Create a user
  * @param {Object} userBody
@@ -12,22 +12,12 @@ const createUser = async (userBody) => {
   if (await User.accountAlreadyExist(userBody.facebookId)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Account already exist');
   }
-  const { pair, mnemonic } = await blockchainService.createPair();
-  const data = {
-    address: pair.address.toString(),
-    meta: pair.meta,
-    type: pair.type.toString(),
-    mnemonic: mnemonic,
-  }
-  const pk = [];
-  pair.publicKey.forEach(element => {
-    pk.push(element);
-  });
-  userBody.blockchainData = {
-    data: data,
-    publicKey: pk
-  }
+  const address = await addressService.getAddress();
+  userBody.address = address.value;
   const user = await User.create(userBody);
+  address.status = true;
+  // lets set to true in address
+  address.save();
   return user;
 };
 
@@ -68,7 +58,7 @@ const getUserByEmail = async (email) => {
  * @param {string} InstagramId
  * @returns {Promise<User>}
  */
- const getUserByInstagramId = async (instagramAccountId) => {
+const getUserByInstagramId = async (instagramAccountId) => {
   return User.findOne({ instagramAccountId });
 };
 
@@ -103,14 +93,14 @@ const addImportedResourceForUserById = async (userId, updatedImportedResourceBod
   // proper quadratic algo lol
   updatedImportedResourceBody.forEach(element => {
     let flag = true;
-    for(let i = 0; i < user.resource.length; i++){
+    for (let i = 0; i < user.resource.length; i++) {
       // dont add if already present
-      if(user.resource[i].resourceUrl === element.resourceUrl){
+      if (user.resource[i].resourceUrl === element.resourceUrl) {
         flag = false;
         break;
       }
     }
-    if(flag)
+    if (flag)
       user.resource.push(element);
   });
   await user.save();
@@ -123,13 +113,13 @@ const updateResourceStateForUserById = async (userId, resourceUrl, newState) => 
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   let i = 0;
-  for(i=0; i < user.resource.length; i++){
-    if(user.resource[i].resourceUrl === resourceUrl){
+  for (i = 0; i < user.resource.length; i++) {
+    if (user.resource[i].resourceUrl === resourceUrl) {
       user.resource[i].state = newState;
       break;
     }
   }
-  
+
   await user.save();
   return user;
 };
