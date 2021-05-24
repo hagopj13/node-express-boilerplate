@@ -8,7 +8,12 @@ const resourceSchema = mongoose.Schema(
       required: true,
       index: true,
     },
-    state:{
+    resourceHash: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    state: {
       type: String,
       enum: states,
       default: 'imported',
