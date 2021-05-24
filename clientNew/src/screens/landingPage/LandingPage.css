@@ -1,0 +1,51 @@
+:root {
+  --profileColor: #195c77;
+  --exploreColor: #1d405f;
+}
+
+.landingPage {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  overflow: hidden;
+}
+
+.landingPageItems {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: center;
+}
+
+.exploreStyle {
+  font-size: xx-large;
+  border: var(--exploreColor) 4px solid;
+  padding: 0.3% 4%;
+  border-radius: 10px;
+  color: var(--exploreColor);
+  text-shadow: 0 0 1px var(--exploreColor);
+  box-shadow: 0 0 12px 0 var(--exploreColor), inset 0 0 8px 0 var(--exploreColor);
+  transition-duration: 200ms;
+}
+
+.exploreStyle:hover {
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
+.profileStyle {
+  font-size: xx-large;
+  border: var(--profileColor) 4px solid;
+  padding: 0.3% 4%;
+  border-radius: 10px;
+  color: var(--profileColor);
+  text-shadow: 0 0 8px var(--profileColor);
+  box-shadow: 0 0 12px 0 var(--profileColor), inset 0 0 8px 0 var(--profileColor);
+  transition-duration: 200ms;
+}
+
+.profileStyle:hover {
+  transform: scale(1.5);
+  cursor: pointer;
+}
