@@ -2,19 +2,14 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 
-const register = catchAsync(async (req, res) => {
-  const checkUser = await userService.getUserByFacebookId(req.body.facebookId);
-  if (checkUser) {
-    res.status(httpStatus.CONFLICT);
-  }
-  const user = await userService.createUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user);
-  res.status(httpStatus.CREATED).send({ user, tokens });
-});
-
 const login = catchAsync(async (req, res) => {
-  const { facebookId, facebookToken } = req.body;
-  const user = await authService.loginUserWithFacebookToken(facebookId, facebookToken);
+  const { facebookId } = req.body;
+  let user = await userService.getUserByFacebookId(facebookId);
+  if (!user) {
+    // we create the user here
+    console.log("we are here");
+    user = await userService.createUser(req.body);
+  }
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
 });
@@ -30,7 +25,6 @@ const refreshTokens = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  register,
   login,
   logout,
   refreshTokens

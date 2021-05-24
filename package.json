@@ -11,7 +11,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "both": "concurrently \"yarn dev\" \"cd client && npm start\"",
+    "both": "concurrently \"yarn dev\" \"cd clientNew && npm run linux\"",
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "lint": "eslint .",

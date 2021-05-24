@@ -1,17 +1,9 @@
 const Joi = require('joi');
-const { facebookToken } = require('./custom.validation');
-
-const register = {
-  body: Joi.object().keys({
-    facebookId: Joi.string().required(),
-    name: Joi.string().required(),
-  }),
-};
 
 const login = {
   body: Joi.object().keys({
     facebookId: Joi.string().required(),
-    facebookToken: Joi.string().required().custom(facebookToken),
+    name: Joi.string().required(),
   }),
 };
 
@@ -28,7 +20,6 @@ const refreshTokens = {
 };
 
 module.exports = {
-  register,
   login,
   logout,
   refreshTokens
