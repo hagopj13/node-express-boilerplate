@@ -7,42 +7,36 @@ import Explore from './screens/Explore/Explore';
 import LandingPage from './screens/landingPage/LandingPage';
 import NavBar from './screens/NavBar/NavBar';
 import Profile from './screens/Profile/Profile';
+import Toast from './screens/components/Toast';
+import { useState } from 'react';
 
 function App() {
   const history = useHistory();
-  const [login, setLogin] = useLogin();
+  const { login, setLogin, setToken, setUser } = useLogin();
+  const [showAlert, setShowAlert] = useState(false);
 
-  const responseFacebook = (response) => {
-    let { id, name } = response;
+  const responseFacebook = async ({ id, name }) => {
     if (id && name) {
-      let registerPayload = {
-        "facebookId": id,
-        "name": name
+      const registerPayload = {
+        facebookId: id,
+        name: name,
       };
-      axios.post("/v1/auth/login", registerPayload)
-        .then((response) => {
-          // if we get response, it means we got the tokens and we got the user object
-          // SAVE TOKEN
-          // SAVE USER OBJECT
-          console.log(response);
-          let backendToken = response.data.tokens.access.token;
-          let user = response.data.user;
-          console.log(backendToken);
-          console.log(user);
 
-          setLogin(true);
-          history.push('/home');
-        })
-        .catch((error) => {
-          // WE NEED A WAY TO SHOW ERROR
-          console.log(error);
-          alert("Login failed. Check console");
-        });
+      try {
+        const { data } = await axios.post('/v1/auth/login', registerPayload);
+        setToken(data.tokens.access.token);
+        setUser(data.user);
+        setLogin(true);
+        history.push('/home');
+      } catch {
+        setShowAlert(true);
+      }
     }
   };
 
   return (
-    <>
+    <div className="backgroundLayout">
+      <Toast message="Failed to login" showAlert={showAlert} onClose={() => setShowAlert((p) => !p)} severity="error" />
       {!login && (
         <div className="facebookLogin">
           <FacebookLogin appId="368528274469848" fields="name,email,picture" callback={responseFacebook} />
@@ -59,7 +53,7 @@ function App() {
           </Switch>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

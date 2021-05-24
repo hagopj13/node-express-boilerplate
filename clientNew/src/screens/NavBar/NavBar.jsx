@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { useLogin } from '../../contexts/LoginContext';
 
 const NavBar = () => {
-  const [, setLogin] = useLogin();
+  const { setLogin } = useLogin();
   const history = useHistory();
 
   return (

@@ -7,6 +7,11 @@ export const useLogin = () => {
 };
 
 export const LoginProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  return <LoginContext.Provider value={[loggedIn, setLoggedIn]}>{children}</LoginContext.Provider>;
+  const [login, setLogin] = useState(false);
+  const [token, setToken] = useState();
+  const [user, setUser] = useState();
+
+  return (
+    <LoginContext.Provider value={{ login, setLogin, token, setToken, user, setUser }}>{children}</LoginContext.Provider>
+  );
 };
