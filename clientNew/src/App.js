@@ -39,7 +39,11 @@ function App() {
       <Toast message="Failed to login" showAlert={showAlert} onClose={() => setShowAlert((p) => !p)} severity="error" />
       {!login && (
         <div className="facebookLogin">
-          <FacebookLogin appId="368528274469848" fields="name,email,picture" callback={responseFacebook} />
+          <FacebookLogin
+            appId="368528274469848"
+            fields="name,email,picture"
+            scope="instagram_basic,pages_read_engagement,pages_show_list"
+            callback={responseFacebook} />
         </div>
       )}
 
