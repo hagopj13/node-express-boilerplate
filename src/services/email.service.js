@@ -7,8 +7,14 @@ const transport = nodemailer.createTransport(config.email.smtp);
 if (config.env !== 'test') {
   transport
     .verify()
-    .then(() => logger.info('Connected to email server'))
-    .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
+    .then(() => {
+      logger.info(`Email transport verify successful`);
+    })
+    .catch((error) => {
+      logger.warn(`Email transport verify returned: ${error}`);
+      logger.warn(`Unable to make connection to ${config.email.smtp.host}:${config.email.smtp.port}`);
+      logger.warn('Make sure you have configured the SMTP options in .env');
+    });
 }
 
 /**
