@@ -1,7 +1,7 @@
-const request = require('supertest');
-const httpStatus = require('http-status');
-const app = require('../../src/app');
-const config = require('../../src/config/config');
+import request from 'supertest';
+import httpStatus from 'http-status';
+import app from '../../src/app';
+import config from '../../src/config/config';
 
 describe('Auth routes', () => {
   describe('GET /v1/docs', () => {

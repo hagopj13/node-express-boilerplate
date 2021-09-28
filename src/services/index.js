@@ -1,4 +1,4 @@
-module.exports.authService = require('./auth.service');
-module.exports.emailService = require('./email.service');
-module.exports.tokenService = require('./token.service');
-module.exports.userService = require('./user.service');
+export * as authService from './auth.service';
+export * as emailService from './email.service';
+export * as tokenService from './token.service';
+export * as userService from './user.service';

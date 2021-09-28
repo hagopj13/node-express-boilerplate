@@ -1,7 +1,7 @@
-const passport = require('passport');
-const httpStatus = require('http-status');
-const ApiError = require('../utils/ApiError');
-const { roleRights } = require('../config/roles');
+import passport from 'passport';
+import httpStatus from 'http-status';
+import ApiError from '../utils/ApiError';
+import { roleRights } from '../config/roles';
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
   if (err || info || !user) {
@@ -28,4 +28,4 @@ const auth = (...requiredRights) => async (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports = auth;
+export default auth

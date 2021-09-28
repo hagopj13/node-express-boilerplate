@@ -7,16 +7,18 @@
   "repository": "https://github.com/hagopj13/node-express-boilerplate.git",
   "author": "Hagop Jamkojian <hagopj13@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "engines": {
     "node": ">=12.0.0"
   },
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "test": "jest -i --colors --verbose --detectOpenHandles",
-    "test:watch": "jest -i --watchAll",
-    "coverage": "jest -i --coverage",
-    "coverage:coveralls": "jest -i --coverage --coverageReporters=text-lcov | coveralls",
+    "dev": "cross-env NODE_ENV=development nodemon --experimental-specifier-resolution=node src/index.js",
+    "jest": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test": "yarn jest -i --colors --verbose --detectOpenHandles",
+    "test:watch": "yarn jest -i --watchAll",
+    "coverage": "yarn jest -i --coverage",
+    "coverage:coveralls": "yarn jest -i --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check **/*.js",
@@ -75,6 +77,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "@jest/globals": "^27.2.2",
     "coveralls": "^3.0.7",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
