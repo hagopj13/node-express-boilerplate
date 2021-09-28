@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { toJSON } from './plugins';
+import { toJSON } from './plugins/toJSON.plugin';
 import { tokenTypes } from '../config/tokens';
 
 const tokenSchema = mongoose.Schema(
@@ -39,6 +39,4 @@ tokenSchema.plugin(toJSON);
 /**
  * @typedef Token
  */
-const Token = mongoose.model('Token', tokenSchema);
-
-export default Token;
+export const Token = mongoose.model('Token', tokenSchema);

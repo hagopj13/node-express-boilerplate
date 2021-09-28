@@ -1,6 +1,6 @@
 import passport from 'passport';
 import httpStatus from 'http-status';
-import ApiError from '../utils/ApiError';
+import { ApiError } from '../utils/ApiError';
 import { roleRights } from '../config/roles';
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
@@ -20,12 +20,12 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
   resolve();
 };
 
-const auth = (...requiredRights) => async (req, res, next) => {
-  return new Promise((resolve, reject) => {
-    passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
-  })
-    .then(() => next())
-    .catch((err) => next(err));
-};
-
-export default auth
+export const auth =
+  (...requiredRights) =>
+  async (req, res, next) => {
+    return new Promise((resolve, reject) => {
+      passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
+    })
+      .then(() => next())
+      .catch((err) => next(err));
+  };

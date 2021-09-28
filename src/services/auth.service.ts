@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import * as tokenService from './token.service';
 import * as userService from './user.service';
-import Token from '../models/token.model';
-import ApiError from '../utils/ApiError';
+import { Token } from '../models/token.model';
+import { ApiError } from '../utils/ApiError';
 import { tokenTypes } from '../config/tokens';
 
 /**
