@@ -1,10 +1,10 @@
 import express from 'express';
-import authRoute from './auth.route';
-import userRoute from './user.route';
-import docsRoute from './docs.route';
-import config from '../../config/config';
+import { router as authRoute } from './auth.route';
+import { router as userRoute } from './user.route';
+import { router as docsRoute } from './docs.route';
+import { config } from '../../config/config';
 
-const router = express.Router();
+export const routes = express.Router();
 
 const defaultRoutes = [
   {
@@ -26,14 +26,12 @@ const devRoutes = [
 ];
 
 defaultRoutes.forEach((route) => {
-  router.use(route.path, route.route);
+  routes.use(route.path, route.route);
 });
 
 /* istanbul ignore next */
 if (config.env === 'development') {
   devRoutes.forEach((route) => {
-    router.use(route.path, route.route);
+    routes.use(route.path, route.route);
   });
 }
-
-export default router;

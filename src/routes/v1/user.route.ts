@@ -1,10 +1,10 @@
 import express from 'express';
-import auth from '../../middlewares/auth';
-import validate from '../../middlewares/validate';
+import { auth } from '../../middlewares/auth';
+import { validate } from '../../middlewares/validate';
 import * as userValidation from '../../validations/user.validation';
 import * as userController from '../../controllers/user.controller';
 
-const router = express.Router();
+export const router = express.Router();
 
 router
   .route('/')
@@ -16,8 +16,6 @@ router
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
-
-export default router;
 
 /**
  * @swagger

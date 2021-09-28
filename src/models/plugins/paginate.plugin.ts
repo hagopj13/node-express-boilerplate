@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-const paginate = (schema) => {
+export const paginate = (schema) => {
   /**
    * @typedef {Object} QueryResult
    * @property {Document[]} results - Results found
@@ -66,5 +66,3 @@ const paginate = (schema) => {
     });
   };
 };
-
-export default paginate;

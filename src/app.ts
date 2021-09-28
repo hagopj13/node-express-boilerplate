@@ -6,15 +6,15 @@ import compression from 'compression';
 import cors from 'cors';
 import passport from 'passport';
 import httpStatus from 'http-status';
-import config from './config/config';
+import { config } from './config/config';
 import * as morgan from './config/morgan';
 import { jwtStrategy } from './config/passport';
 import { authLimiter } from './middlewares/rateLimiter';
-import routes from './routes/v1';
+import { routes } from './routes/v1';
 import { errorConverter, errorHandler } from './middlewares/error';
-import ApiError from './utils/ApiError';
+import { ApiError } from './utils/ApiError';
 
-const app = express();
+export const app = express();
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -63,5 +63,3 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
-
-export default app;

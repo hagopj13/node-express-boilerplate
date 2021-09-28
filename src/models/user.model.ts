@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import { toJSON, paginate } from './plugins';
+import { toJSON } from './plugins/toJSON.plugin';
+import { paginate } from './plugins/paginate.plugin';
 import { roles } from '../config/roles';
 
 const userSchema = mongoose.Schema(
@@ -86,6 +87,4 @@ userSchema.pre('save', async function (next) {
 /**
  * @typedef User
  */
-const User = mongoose.model('User', userSchema);
-
-export default User;
+export const User = mongoose.model('User', userSchema);

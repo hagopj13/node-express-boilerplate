@@ -1,6 +1,6 @@
 import morgan from 'morgan';
-import config from './config';
-import logger from './logger';
+import { config } from './config';
+import { logger } from './logger';
 
 morgan.token('message', (req, res) => res.locals.errorMessage || '');
 
