@@ -1,11 +1,11 @@
-const { version } = require('../../package.json');
-const config = require('../config/config');
+import pkg from '../../package.json';
+import config from '../config/config';
 
 const swaggerDef = {
   openapi: '3.0.0',
   info: {
     title: 'node-express-boilerplate API documentation',
-    version,
+    version: pkg.version,
     license: {
       name: 'MIT',
       url: 'https://github.com/hagopj13/node-express-boilerplate/blob/master/LICENSE',
@@ -18,4 +18,4 @@ const swaggerDef = {
   ],
 };
 
-module.exports = swaggerDef;
+export default swaggerDef;

@@ -67,4 +67,4 @@ const paginate = (schema) => {
   };
 };
 
-module.exports = paginate;
+export default paginate;
