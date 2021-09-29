@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { setupTestDB } from '../../../utils/setupTestDB';
 import { paginate } from '../../../../src/models/plugins/paginate.plugin';
 
-const projectSchema = mongoose.Schema({
+const projectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -18,7 +18,7 @@ projectSchema.virtual('tasks', {
 projectSchema.plugin(paginate);
 const Project = mongoose.model('Project', projectSchema);
 
-const taskSchema = mongoose.Schema({
+const taskSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
