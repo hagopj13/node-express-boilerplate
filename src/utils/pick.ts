@@ -4,12 +4,14 @@
  * @param {string[]} keys
  * @returns {Object}
  */
-export const pick = (object, keys) => {
-  return keys.reduce((obj, key) => {
-    if (object && Object.prototype.hasOwnProperty.call(object, key)) {
-      // eslint-disable-next-line no-param-reassign
-      obj[key] = object[key];
+export const pick = <T extends {}, K extends readonly string[]>(object: T, keys: K) => {
+  let newObject = {} as Pick<T, K[number]>;
+
+  for (const key of keys) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      newObject[key] = object[key];
     }
-    return obj;
-  }, {});
+  }
+
+  return newObject;
 };

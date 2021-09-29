@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import { config } from '../config/config';
 import { logger } from '../config/logger';
 import { ApiError } from '../utils/ApiError';
+import { NextFunction, Request, Response } from 'express';
 
 export const errorConverter = (err, req, res, next) => {
   let error = err;
@@ -16,7 +17,7 @@ export const errorConverter = (err, req, res, next) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err: ApiError, req: Request, res: Response, next?: NextFunction) => {
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;

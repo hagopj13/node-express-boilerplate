@@ -1,7 +1,10 @@
 const allRoles = {
   user: [],
   admin: ['getUsers', 'manageUsers'],
-};
+} as const;
 
-export const roles = Object.keys(allRoles);
-export const roleRights = new Map(Object.entries(allRoles));
+export type Roles = keyof typeof allRoles;
+export type Permissions = typeof allRoles[keyof typeof allRoles][number];
+
+export const roles = Object.keys(allRoles) as Roles[];
+export const roleRights = new Map<Roles, Permissions>(Object.entries(allRoles));
