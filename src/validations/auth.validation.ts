@@ -1,50 +1,50 @@
-import Joi from 'joi';
+import { z } from 'zod';
 import { password } from './custom.validation';
 
-export const register = {
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password),
-    name: Joi.string().required(),
+export const register = z.object({
+  body: z.object({
+    email: z.string(),
+    password: z.string(),
+    name: z.string(),
   }),
-};
+});
 
-export const login = {
-  body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
+export const login = z.object({
+  body: z.object({
+    email: z.string(),
+    password: z.string(),
   }),
-};
+});
 
-export const logout = {
-  body: Joi.object().keys({
-    refreshToken: Joi.string().required(),
+export const logout = z.object({
+  body: z.object({
+    refreshToken: z.string(),
   }),
-};
+});
 
-export const refreshTokens = {
-  body: Joi.object().keys({
-    refreshToken: Joi.string().required(),
+export const refreshTokens = z.object({
+  body: z.object({
+    refreshToken: z.string(),
   }),
-};
+});
 
-export const forgotPassword = {
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
+export const forgotPassword = z.object({
+  body: z.object({
+    email: z.string().email(),
   }),
-};
+});
 
-export const resetPassword = {
-  query: Joi.object().keys({
-    token: Joi.string().required(),
+export const resetPassword = z.object({
+  query: z.object({
+    token: z.string(),
   }),
-  body: Joi.object().keys({
-    password: Joi.string().required().custom(password),
+  body: z.object({
+    password: z.string().superRefine(password),
   }),
-};
+});
 
-export const verifyEmail = {
-  query: Joi.object().keys({
-    token: Joi.string().required(),
+export const verifyEmail = z.object({
+  query: z.object({
+    token: z.string(),
   }),
-};
+});

@@ -1,46 +1,52 @@
-import Joi from 'joi';
-import { password, objectId } from './custom.validation';
+import { z } from 'zod';
+import { objectId, password } from './custom.validation';
 
-export const createUser = {
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password),
-    name: Joi.string().required(),
-    role: Joi.string().required().valid('user', 'admin'),
+export const createUser = z.object({
+  body: z.object({
+    email: z.string().email(),
+    password: z.string().superRefine(password),
+    name: z.string(),
+    role: z.union([z.literal('admin'), z.literal('user')]),
   }),
-};
+});
 
-export const getUsers = {
-  query: Joi.object().keys({
-    name: Joi.string(),
-    role: Joi.string(),
-    sortBy: Joi.string(),
-    limit: Joi.number().integer(),
-    page: Joi.number().integer(),
+export const getUsers = z.object({
+  query: z.object({
+    name: z.string().optional(),
+    role: z.string().optional(),
+    sortBy: z.string().optional(),
+    limit: z
+      .string()
+      .transform((v) => parseInt(v, 10))
+      .optional(),
+    page: z
+      .string()
+      .transform((v) => parseInt(v, 10))
+      .optional(),
   }),
-};
+});
 
-export const getUser = {
-  params: Joi.object().keys({
-    userId: Joi.string().custom(objectId),
+export const getUser = z.object({
+  params: z.object({
+    userId: z.string().superRefine(objectId).optional(),
   }),
-};
+});
 
-export const updateUser = {
-  params: Joi.object().keys({
-    userId: Joi.required().custom(objectId),
+export const updateUser = z.object({
+  params: z.object({
+    userId: z.string().superRefine(objectId),
   }),
-  body: Joi.object()
-    .keys({
-      email: Joi.string().email(),
-      password: Joi.string().custom(password),
-      name: Joi.string(),
+  body: z
+    .object({
+      email: z.string().email().optional(),
+      password: z.string().superRefine(password).optional(),
+      name: z.string().optional(),
     })
-    .min(1),
-};
+    .optional(),
+});
 
-export const deleteUser = {
-  params: Joi.object().keys({
-    userId: Joi.string().custom(objectId),
+export const deleteUser = z.object({
+  params: z.object({
+    userId: z.string().superRefine(objectId).optional(),
   }),
-};
+});
