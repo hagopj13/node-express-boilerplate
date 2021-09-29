@@ -12,5 +12,5 @@
     "ts-node": {
         "transpileOnly": true,
     },
-    "include": ["./src/**/*"]
+    "include": ["./src/**/*", "./tests/**/*"]
 } 
