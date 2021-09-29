@@ -19,7 +19,7 @@ describe('Error middlewares', () => {
     });
 
     test('should convert an Error to ApiError and preserve its status and message', () => {
-      const error = new Error('Any error');
+      const error = new Error('Any error') as ApiError;
       error.statusCode = httpStatus.BAD_REQUEST;
       const next = jest.fn();
 
@@ -52,7 +52,7 @@ describe('Error middlewares', () => {
     });
 
     test('should convert an Error without message to ApiError with default message of that http status', () => {
-      const error = new Error();
+      const error = new Error() as ApiError;
       error.statusCode = httpStatus.BAD_REQUEST;
       const next = jest.fn();
 
@@ -103,7 +103,7 @@ describe('Error middlewares', () => {
 
   describe('Error handler', () => {
     beforeEach(() => {
-      jest.spyOn(logger, 'error').mockImplementation(() => {});
+      jest.spyOn(logger, 'error').mockImplementation(() => null);
     });
 
     test('should send proper error response and put the error message in res.locals', () => {
@@ -128,7 +128,7 @@ describe('Error middlewares', () => {
       expect(sendSpy).toHaveBeenCalledWith(
         expect.objectContaining({ code: error.statusCode, message: error.message, stack: error.stack })
       );
-      config.env = process.env.NODE_ENV;
+      config.env = process.env.NODE_ENV as typeof config.env;
     });
 
     test('should send internal server error status and message if in production mode and error is not operational', () => {
@@ -146,7 +146,7 @@ describe('Error middlewares', () => {
         })
       );
       expect(res.locals.errorMessage).toBe(error.message);
-      config.env = process.env.NODE_ENV;
+      config.env = process.env.NODE_ENV as typeof config.env;
     });
 
     test('should preserve original error status and message if in production mode and error is operational', () => {
@@ -163,7 +163,7 @@ describe('Error middlewares', () => {
           message: error.message,
         })
       );
-      config.env = process.env.NODE_ENV;
+      config.env = process.env.NODE_ENV as typeof config.env;
     });
   });
 });
