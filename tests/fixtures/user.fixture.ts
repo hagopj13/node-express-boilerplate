@@ -8,7 +8,7 @@ const salt = bcrypt.genSaltSync(8);
 const hashedPassword = bcrypt.hashSync(password, salt);
 
 export const userOne = {
-  _id: mongoose.Types.ObjectId(),
+  _id: new mongoose.Types.ObjectId(),
   name: faker.name.findName(),
   email: faker.internet.email().toLowerCase(),
   password,
@@ -17,7 +17,7 @@ export const userOne = {
 };
 
 export const userTwo = {
-  _id: mongoose.Types.ObjectId(),
+  _id: new mongoose.Types.ObjectId(),
   name: faker.name.findName(),
   email: faker.internet.email().toLowerCase(),
   password,
@@ -26,7 +26,7 @@ export const userTwo = {
 };
 
 export const admin = {
-  _id: mongoose.Types.ObjectId(),
+  _id: new mongoose.Types.ObjectId(),
   name: faker.name.findName(),
   email: faker.internet.email().toLowerCase(),
   password,
