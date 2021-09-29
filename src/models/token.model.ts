@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { toJSON } from './plugins/toJSON.plugin';
 import { tokenTypes } from '../config/tokens';
 
-const tokenSchema = mongoose.Schema(
+const tokenSchema = new mongoose.Schema(
   {
     token: {
       type: String,
