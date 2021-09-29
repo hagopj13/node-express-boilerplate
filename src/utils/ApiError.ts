@@ -1,5 +1,9 @@
+import { HttpStatus } from 'http-status';
+
 export class ApiError extends Error {
-  constructor(statusCode, message, isOperational = true, stack = '') {
+  statusCode: number;
+  isOperational: boolean;
+  constructor(statusCode: number, message: string, isOperational = true, stack = '') {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;

@@ -19,7 +19,15 @@ export const paginate = (schema) => {
    * @param {number} [options.page] - Current page (default = 1)
    * @returns {Promise<QueryResult>}
    */
-  schema.statics.paginate = async function (filter, options) {
+  schema.statics.paginate = async function paginate(
+    filter: any,
+    options: {
+      sortBy?: string;
+      populate?: string;
+      limit?: number;
+      page?: number;
+    }
+  ) {
     let sort = '';
     if (options.sortBy) {
       const sortingCriteria = [];
@@ -52,17 +60,16 @@ export const paginate = (schema) => {
 
     docsPromise = docsPromise.exec();
 
-    return Promise.all([countPromise, docsPromise]).then((values) => {
-      const [totalResults, results] = values;
-      const totalPages = Math.ceil(totalResults / limit);
-      const result = {
-        results,
-        page,
-        limit,
-        totalPages,
-        totalResults,
-      };
-      return Promise.resolve(result);
-    });
+    const values = await Promise.all([countPromise, docsPromise]);
+    const [totalResults, results] = values;
+    const totalPages = Math.ceil(totalResults / limit);
+    const result = {
+      results,
+      page,
+      limit,
+      totalPages,
+      totalResults,
+    };
+    return result;
   };
 };
