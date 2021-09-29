@@ -1,19 +1,22 @@
-import Joi from 'joi';
+import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { pick } from '../utils/pick';
+import { z } from 'zod';
 import { ApiError } from '../utils/ApiError';
+import { pick } from '../utils/pick';
 
-export const validate = (schema) => (req, res, next) => {
-  const validSchema = pick(schema, ['params', 'query', 'body']);
-  const object = pick(req, Object.keys(validSchema));
-  const { value, error } = Joi.compile(validSchema)
-    .prefs({ errors: { label: 'key' }, abortEarly: false })
-    .validate(object);
+export const validate =
+  <T extends z.ZodObject<z.ZodRawShape>>(schema: T) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    let newObject = pick(req, ['query', 'params', 'body']);
 
-  if (error) {
-    const errorMessage = error.details.map((details) => details.message).join(', ');
-    return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
-  }
-  Object.assign(req, value);
-  return next();
-};
+    try {
+      const value = schema.parse(newObject);
+      Object.assign(req, value);
+    } catch (error: unknown) {
+      if (!(error instanceof z.ZodError)) return;
+      const errorMessage = error.issues.map((details) => details.message).join(', ');
+      return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
+    }
+
+    return next();
+  };
