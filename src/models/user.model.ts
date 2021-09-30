@@ -5,7 +5,16 @@ import { toJSON } from './plugins/toJSON.plugin';
 import { paginate } from './plugins/paginate.plugin';
 import { roles } from '../config/roles';
 
-const userSchema = mongoose.Schema(
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  isEmailVerified: boolean;
+}
+
+const userSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
