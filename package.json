@@ -73,7 +73,8 @@
     "swagger-ui-express": "^4.1.6",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.1",
+    "zod": "^3.9.3"
   },
   "devDependencies": {
     "@jest/globals": "^27.2.3",
