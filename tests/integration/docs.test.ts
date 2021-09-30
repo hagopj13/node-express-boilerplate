@@ -8,7 +8,7 @@ describe('Auth routes', () => {
     test('should return 404 when running in production', async () => {
       config.env = 'production';
       await request(app).get('/v1/docs').send().expect(httpStatus.NOT_FOUND);
-      config.env = process.env.NODE_ENV;
+      config.env = process.env.NODE_ENV as typeof config.env;
     });
   });
 });
