@@ -5,7 +5,7 @@ import { toJSON } from './plugins/toJSON.plugin';
 import { paginate } from './plugins/paginate.plugin';
 import { roles } from '../config/roles';
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
