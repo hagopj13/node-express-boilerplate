@@ -97,3 +97,4 @@ userSchema.pre('save', async function (next) {
  * @typedef User
  */
 export const User = mongoose.model('User', userSchema);
+export type UserModel = typeof User;
