@@ -1,9 +1,16 @@
-import passport from 'passport';
+import { Request } from "express";
 import httpStatus from 'http-status';
+import passport from 'passport';
+import { Permissions, roleRights } from '../config/roles';
+import { UserModel } from '../models/user.model';
 import { ApiError } from '../utils/ApiError';
-import { roleRights } from '../config/roles';
+namespace Express {
+  export interface Request {
+    user?: UserModel
+  }
+}
 
-const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
+const verifyCallback = (req: Request, resolve, reject, requiredRights: Permissions[]) => async (err, user?: UserModel, info) => {
   if (err || info || !user) {
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
@@ -21,7 +28,7 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
 };
 
 export const auth =
-  (...requiredRights) =>
+  (...requiredRights: Permissions[]) =>
   async (req, res, next) => {
     return new Promise((resolve, reject) => {
       passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
