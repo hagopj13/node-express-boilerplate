@@ -50,7 +50,9 @@
     "prettier"
   ],
   "dependencies": {
+    "@typegoose/typegoose": "^9.1.0",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/mongoose": "^5.11.97",
     "@types/passport-jwt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",

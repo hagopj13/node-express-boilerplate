@@ -10,6 +10,8 @@ export const createUser = z.object({
   }),
 });
 
+export type UserBody = z.infer<typeof createUser>["body"]
+
 export const getUsers = z.object({
   query: z.object({
     name: z.string().optional(),

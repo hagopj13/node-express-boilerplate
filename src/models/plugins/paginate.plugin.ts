@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-export const paginate = (schema) => {
+export const paginate = (schema: any) => {
   /**
    * @typedef {Object} QueryResult
    * @property {Document[]} results - Results found
