@@ -1,42 +1,37 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import { toJSON } from './plugins/toJSON.plugin';
 import { paginate } from './plugins/paginate.plugin';
-import { roles } from '../config/roles';
+import { Roles, roles } from '../config/roles';
+import { prop, getModelForClass, pre, plugin, DocumentType } from '@typegoose/typegoose';
+@pre<UserClass>('save', async function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
+})
+@plugin(toJSON)
+@plugin(paginate)
+class UserClass {
+  @prop({trim: true})
+  public name: string
 
-export interface IUser {
-  _id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  isEmailVerified: boolean;
-}
+  @prop({
+    unique: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Invalid email');
+      }
+    },
+  })
+  public email: string
 
-const userSchema = new mongoose.Schema<IUser>(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error('Invalid email');
-        }
-      },
-    },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
+  @prop({
+    trim: true,
       minlength: 8,
       validate(value) {
         if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
@@ -44,57 +39,38 @@ const userSchema = new mongoose.Schema<IUser>(
         }
       },
       private: true, // used by the toJSON plugin
-    },
-    role: {
-      type: String,
-      enum: roles,
-      default: 'user',
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+  })
+  public password: string
 
-// add plugin that converts mongoose to json
-userSchema.plugin(toJSON);
-userSchema.plugin(paginate);
+  @prop({
+    enum: roles,
+    default: 'user',
+  })
+  role: Roles
 
-/**
- * Check if email is taken
- * @param {string} email - The user's email
- * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
- * @returns {Promise<boolean>}
- */
-userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
-  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
-  return !!user;
-};
+  @prop({default: false})
+  isEmailVerified: boolean
 
-/**
- * Check if password matches the user's password
- * @param {string} password
- * @returns {Promise<boolean>}
- */
-userSchema.methods.isPasswordMatch = async function (password) {
-  const user = this;
-  return bcrypt.compare(password, user.password);
-};
+  /**
+   * Check if email is taken
+   * @param {string} email - The user's email
+   * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
+   * @returns {Promise<boolean>}
+   */
+  static async isEmailTaken(email: string, excludeUserId?: boolean) {
+    const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+    return !!user;
+  };
 
-userSchema.pre('save', async function (next) {
-  const user = this;
-  if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, 8);
-  }
-  next();
-});
+  /**
+   * Check if password matches the user's password
+   * @param {string} password
+   * @returns {Promise<boolean>}
+   */
+  async isPasswordMatch (password: string) {
+    return bcrypt.compare(password, this.password);
+  };
+}
 
-/**
- * @typedef User
- */
-export const User = mongoose.model('User', userSchema);
-export type UserModel = typeof User;
+export const User = getModelForClass(UserClass)
+export type UserModel = typeof UserClass;

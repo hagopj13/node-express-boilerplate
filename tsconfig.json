@@ -7,7 +7,9 @@
         "resolveJsonModule": true,
         "inlineSourceMap": true,
         "module": "CommonJS",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "ts-node": {
         "transpileOnly": true,

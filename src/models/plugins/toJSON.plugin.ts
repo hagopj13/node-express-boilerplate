@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 
+import { Schema } from "mongoose";
+
 /**
  * A mongoose schema plugin which applies the following in the toJSON transform call:
  *  - removes __v, createdAt, updatedAt, and any path that has private: true
@@ -14,7 +16,7 @@ const deleteAtPath = (obj, path, index) => {
   deleteAtPath(obj[path[index]], path, index + 1);
 };
 
-export const toJSON = (schema) => {
+export const toJSON = (schema: any) => {
   let transform;
   if (schema.options.toJSON && schema.options.toJSON.transform) {
     transform = schema.options.toJSON.transform;
