@@ -1,42 +1,37 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { toJSON } from './plugins/toJSON.plugin';
 import { tokenTypes } from '../config/tokens';
+import { getModelForClass, prop, plugin } from '@typegoose/typegoose';
 
-const tokenSchema = new mongoose.Schema(
-  {
-    token: {
-      type: String,
-      required: true,
-      index: true,
-    },
-    user: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    type: {
-      type: String,
-      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL],
-      required: true,
-    },
-    expires: {
-      type: Date,
-      required: true,
-    },
-    blacklisted: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+enum TokenType {
+  REFRESH = 'refresh',
+  RESET_PASSWORD = 'resetPassword',
+  VERIFY_EMAIL = 'verifyEmail',
+}
 
 // add plugin that converts mongoose to json
-tokenSchema.plugin(toJSON);
+@plugin(toJSON)
+class TokenClass {
+  toJSON: () => any;
+
+  @prop({ required: true, auto: true })
+  public id: mongoose.Schema.Types.ObjectId;
+
+  @prop({ required: true })
+  public user: string;
+
+  @prop({ required: true, enum: TokenType })
+  public type: TokenType;
+
+  @prop({ required: true })
+  public expires: Date;
+
+  @prop()
+  public blacklisted: boolean = false;
+}
 
 /**
  * @typedef Token
  */
-export const Token = mongoose.model('Token', tokenSchema);
+export const Token = getModelForClass(TokenClass, { schemaOptions: { timestamps: true } });
+export type TokenModel = typeof TokenClass;
