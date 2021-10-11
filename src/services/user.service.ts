@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { User } from '../models/user.model';
 import { ApiError } from '../utils/ApiError';
+import { assign } from '../utils/assign';
 import { UserBody } from '../validations/user.validation';
 
 /**
@@ -53,7 +54,7 @@ export const getUserByEmail = async (email: string) => {
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
-export const updateUserById = async (userId: string, updateBody) => {
+export const updateUserById = async (userId: string, updateBody: UserBody) => {
   const user = await getUserById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
@@ -61,7 +62,7 @@ export const updateUserById = async (userId: string, updateBody) => {
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  Object.assign(user, updateBody);
+  assign(user, updateBody);
   await user.save();
   return user;
 };
