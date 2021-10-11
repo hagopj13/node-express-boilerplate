@@ -19,7 +19,7 @@ export const paginate = (schema: any) => {
    * @param {number} [options.page] - Current page (default = 1)
    * @returns {Promise<QueryResult>}
    */
-  schema.statics.paginate = async function paginate(
+  async function paginate(
     filter: any,
     options: {
       sortBy?: string;
@@ -71,5 +71,9 @@ export const paginate = (schema: any) => {
       totalResults,
     };
     return result;
-  };
+  }
+
+  schema.statics.paginate = paginate;
+
+  return paginate;
 };

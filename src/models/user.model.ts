@@ -15,8 +15,11 @@ import { prop, getModelForClass, pre, plugin, DocumentType } from '@typegoose/ty
 @plugin(toJSON)
 @plugin(paginate)
 class UserClass {
-  @prop({trim: true})
-  public name: string
+  paginate: ReturnType<typeof paginate>;
+  toJSON: () => any;
+
+  @prop({ trim: true })
+  public name: string;
 
   @prop({
     unique: true,
@@ -28,28 +31,28 @@ class UserClass {
       }
     },
   })
-  public email: string
+  public email: string;
 
   @prop({
     trim: true,
-      minlength: 8,
-      validate(value) {
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          throw new Error('Password must contain at least one letter and one number');
-        }
-      },
-      private: true, // used by the toJSON plugin
+    minlength: 8,
+    validate(value) {
+      if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
+        throw new Error('Password must contain at least one letter and one number');
+      }
+    },
+    private: true, // used by the toJSON plugin
   })
-  public password: string
+  public password: string;
 
   @prop({
     enum: roles,
     default: 'user',
   })
-  role: Roles
+  role: Roles;
 
-  @prop({default: false})
-  isEmailVerified: boolean
+  @prop({ default: false })
+  isEmailVerified: boolean;
 
   /**
    * Check if email is taken
@@ -60,17 +63,17 @@ class UserClass {
   static async isEmailTaken(email: string, excludeUserId?: boolean) {
     const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
     return !!user;
-  };
+  }
 
   /**
    * Check if password matches the user's password
    * @param {string} password
    * @returns {Promise<boolean>}
    */
-  async isPasswordMatch (password: string) {
+  async isPasswordMatch(password: string) {
     return bcrypt.compare(password, this.password);
-  };
+  }
 }
 
-export const User = getModelForClass(UserClass)
+export const User = getModelForClass(UserClass);
 export type UserModel = typeof UserClass;
