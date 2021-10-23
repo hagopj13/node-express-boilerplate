@@ -13,10 +13,6 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "test": "jest -i --colors --verbose --detectOpenHandles",
-    "test:watch": "jest -i --watchAll",
-    "coverage": "jest -i --coverage",
-    "coverage:coveralls": "jest -i --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check **/*.js",
@@ -40,8 +36,6 @@
     "es7",
     "es8",
     "es9",
-    "jest",
-    "travis",
     "docker",
     "passport",
     "joi",
@@ -75,7 +69,6 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "coveralls": "^3.0.7",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^8.1.0",
@@ -85,11 +78,9 @@
     "eslint-plugin-security": "^1.4.0",
     "faker": "^5.1.0",
     "husky": "^7.0.0",
-    "jest": "^26.0.1",
     "lint-staged": "^11.0.0",
     "node-mocks-http": "^1.8.0",
     "nodemon": "^2.0.0",
-    "prettier": "^2.0.5",
-    "supertest": "^6.0.1"
+    "prettier": "^2.0.5"
   }
 }
