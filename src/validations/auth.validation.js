@@ -6,10 +6,9 @@ const min = 3;
 
 const register = {
   body: Joi.object().keys({
-    firstName: Joi.string().required().min(min).max(max),
-    lastName: Joi.string().required().min(min).max(max),
     email: Joi.string().required().email().min(min).max(max),
     password: Joi.string().required().custom(password),
+    name: Joi.string().required().min(min).max(max),
   }),
 };
 
