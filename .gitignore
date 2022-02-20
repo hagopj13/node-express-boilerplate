@@ -10,3 +10,4 @@ yarn-error.log
 
 # Code coverage
 coverage
+.husky/_
