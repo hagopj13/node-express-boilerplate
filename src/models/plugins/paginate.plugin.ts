@@ -1,4 +1,14 @@
+import { Document } from "mongoose";
+
 /* eslint-disable no-param-reassign */
+export type PaginateFilter = any
+
+export type PaginateOptions = {
+  sortBy?: string;
+  populate?: string;
+  limit?: number;
+  page?: number;
+}
 
 export const paginate = (schema: any) => {
   /**
@@ -20,17 +30,12 @@ export const paginate = (schema: any) => {
    * @returns {Promise<QueryResult>}
    */
   async function paginate(
-    filter: any,
-    options: {
-      sortBy?: string;
-      populate?: string;
-      limit?: number;
-      page?: number;
-    }
+    filter: PaginateFilter,
+    options: PaginateOptions
   ) {
     let sort = '';
     if (options.sortBy) {
-      const sortingCriteria = [];
+      const sortingCriteria: string[] = [];
       options.sortBy.split(',').forEach((sortOption) => {
         const [key, order] = sortOption.split(':');
         sortingCriteria.push((order === 'desc' ? '-' : '') + key);
@@ -40,8 +45,8 @@ export const paginate = (schema: any) => {
       sort = 'createdAt';
     }
 
-    const limit = options.limit && parseInt(options.limit, 10) > 0 ? parseInt(options.limit, 10) : 10;
-    const page = options.page && parseInt(options.page, 10) > 0 ? parseInt(options.page, 10) : 1;
+    const limit = options.limit && options.limit > 0 ? options.limit : 10;
+    const page = options.page && options.page > 0 ? options.page : 1;
     const skip = (page - 1) * limit;
 
     const countPromise = this.countDocuments(filter).exec();

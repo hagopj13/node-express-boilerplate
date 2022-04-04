@@ -1,13 +1,7 @@
 import mongoose, { ObjectId } from 'mongoose';
 import { toJSON } from './plugins/toJSON.plugin';
-import { tokenTypes } from '../config/tokens';
+import { TokenType, tokenTypes } from '../config/tokens';
 import { getModelForClass, prop, plugin, DocumentType } from '@typegoose/typegoose';
-
-enum TokenType {
-  REFRESH = 'refresh',
-  RESET_PASSWORD = 'resetPassword',
-  VERIFY_EMAIL = 'verifyEmail',
-}
 
 // add plugin that converts mongoose to json
 @plugin(toJSON)
@@ -20,7 +14,7 @@ class TokenClass {
   @prop({ required: true })
   public user!: string;
 
-  @prop({ required: true, enum: TokenType })
+  @prop({ required: true, enum: Object.values(tokenTypes) })
   public type!: TokenType;
 
   @prop({ required: true })

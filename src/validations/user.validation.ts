@@ -6,11 +6,11 @@ export const createUser = z.object({
     email: z.string().email(),
     password: z.string().superRefine(password),
     name: z.string(),
-    role: z.union([z.literal('admin'), z.literal('user')]),
+    role: z.union([z.literal('admin'), z.literal('user')]).optional(),
   }),
 });
 
-export type UserBody = z.infer<typeof createUser>["body"]
+export type CreateUser = z.infer<typeof createUser>['body'];
 
 export const getUsers = z.object({
   query: z.object({

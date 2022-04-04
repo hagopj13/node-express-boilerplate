@@ -1,15 +1,15 @@
 import httpStatus from 'http-status';
-import { User } from '../models/user.model';
+import { PaginateFilter, PaginateOptions } from '../models/plugins/paginate.plugin';
+import { User, UserModel } from '../models/user.model';
 import { ApiError } from '../utils/ApiError';
-import { assign } from '../utils/assign';
-import { UserBody } from '../validations/user.validation';
+import { CreateUser } from '../validations/user.validation';
 
 /**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
  */
-export const createUser = async (userBody: UserBody) => {
+export const createUser = async (userBody: CreateUser) => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
@@ -25,7 +25,7 @@ export const createUser = async (userBody: UserBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-export const queryUsers = async (filter, options) => {
+export const queryUsers = async (filter: PaginateFilter, options: PaginateOptions) => {
   const users = await User.paginate(filter, options);
   return users;
 };
@@ -54,7 +54,7 @@ export const getUserByEmail = async (email: string) => {
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
-export const updateUserById = async (userId: string, updateBody: UserBody) => {
+export const updateUserById = async (userId: string, updateBody: Partial<UserModel>) => {
   const user = await getUserById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
@@ -62,7 +62,9 @@ export const updateUserById = async (userId: string, updateBody: UserBody) => {
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  assign(user, updateBody);
+
+  user.set({ ...user, ...updateBody });
+
   await user.save();
   return user;
 };

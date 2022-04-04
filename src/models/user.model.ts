@@ -15,8 +15,8 @@ import { prop, getModelForClass, pre, plugin, DocumentType } from '@typegoose/ty
 @plugin(toJSON)
 @plugin(paginate)
 class UserClass {
-  paginate!: ReturnType<typeof paginate>;
-  toJSON!: () => any;
+  public static paginate: ReturnType<typeof paginate>;
+  public static toJSON: () => any;
 
   @prop({ trim: true })
   public name!: string;
@@ -60,7 +60,7 @@ class UserClass {
    * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
    * @returns {Promise<boolean>}
    */
-  static async isEmailTaken(email: string, excludeUserId?: boolean) {
+  static async isEmailTaken(email: string, excludeUserId?: string) {
     const user = await User.findOne({ email, _id: { $ne: excludeUserId } });
     return !!user;
   }

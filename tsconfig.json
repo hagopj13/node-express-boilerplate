@@ -9,7 +9,8 @@
         "module": "CommonJS",
         "esModuleInterop": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "strict": true
     },
     "ts-node": {
         "transpileOnly": true,
