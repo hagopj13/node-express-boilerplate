@@ -15,44 +15,44 @@ import { prop, getModelForClass, pre, plugin, DocumentType } from '@typegoose/ty
 @plugin(toJSON)
 @plugin(paginate)
 class UserClass {
-  paginate: ReturnType<typeof paginate>;
-  toJSON: () => any;
+  paginate!: ReturnType<typeof paginate>;
+  toJSON!: () => any;
 
   @prop({ trim: true })
-  public name: string;
+  public name!: string;
 
   @prop({
     unique: true,
     trim: true,
     lowercase: true,
-    validate(value) {
+    validate(value: string) {
       if (!validator.isEmail(value)) {
         throw new Error('Invalid email');
       }
     },
   })
-  public email: string;
+  public email!: string;
 
   @prop({
     trim: true,
     minlength: 8,
-    validate(value) {
+    validate(value: string) {
       if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
         throw new Error('Password must contain at least one letter and one number');
       }
     },
     private: true, // used by the toJSON plugin
   })
-  public password: string;
+  public password!: string;
 
   @prop({
     enum: roles,
     default: 'user',
   })
-  role: Roles;
+  role!: Roles;
 
   @prop({ default: false })
-  isEmailVerified: boolean;
+  isEmailVerified!: boolean;
 
   /**
    * Check if email is taken
@@ -61,7 +61,7 @@ class UserClass {
    * @returns {Promise<boolean>}
    */
   static async isEmailTaken(email: string, excludeUserId?: boolean) {
-    const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+    const user = await User.findOne({ email, _id: { $ne: excludeUserId } });
     return !!user;
   }
 
@@ -70,10 +70,10 @@ class UserClass {
    * @param {string} password
    * @returns {Promise<boolean>}
    */
-  async isPasswordMatch(password: string) {
+  public async isPasswordMatch(password: string) {
     return bcrypt.compare(password, this.password);
   }
 }
 
 export const User = getModelForClass(UserClass);
-export type UserModel = typeof UserClass;
+export type UserModel = DocumentType<UserClass>;

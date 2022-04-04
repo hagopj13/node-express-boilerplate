@@ -1,7 +1,7 @@
 import mongoose, { ObjectId } from 'mongoose';
 import { toJSON } from './plugins/toJSON.plugin';
 import { tokenTypes } from '../config/tokens';
-import { getModelForClass, prop, plugin } from '@typegoose/typegoose';
+import { getModelForClass, prop, plugin, DocumentType } from '@typegoose/typegoose';
 
 enum TokenType {
   REFRESH = 'refresh',
@@ -12,19 +12,19 @@ enum TokenType {
 // add plugin that converts mongoose to json
 @plugin(toJSON)
 class TokenClass {
-  toJSON: () => any;
+  toJSON!: () => any;
 
   @prop({ required: true, auto: true })
-  public id: mongoose.Schema.Types.ObjectId;
+  public id!: mongoose.Schema.Types.ObjectId;
 
   @prop({ required: true })
-  public user: string;
+  public user!: string;
 
   @prop({ required: true, enum: TokenType })
-  public type: TokenType;
+  public type!: TokenType;
 
   @prop({ required: true })
-  public expires: Date;
+  public expires!: Date;
 
   @prop()
   public blacklisted: boolean = false;
@@ -34,4 +34,4 @@ class TokenClass {
  * @typedef Token
  */
 export const Token = getModelForClass(TokenClass, { schemaOptions: { timestamps: true } });
-export type TokenModel = typeof TokenClass;
+export type TokenModel = DocumentType<TokenClass>;
