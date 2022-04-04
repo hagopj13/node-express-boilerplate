@@ -3,7 +3,7 @@ import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import { toJSON } from './plugins/toJSON.plugin';
 import { paginate } from './plugins/paginate.plugin';
-import { Roles, roles } from '../config/roles';
+import { Role, roles } from '../config/roles';
 import { prop, getModelForClass, pre, plugin, DocumentType } from '@typegoose/typegoose';
 @pre<UserClass>('save', async function (next) {
   const user = this;
@@ -49,7 +49,7 @@ class UserClass {
     enum: roles,
     default: 'user',
   })
-  role!: Roles;
+  role!: Role;
 
   @prop({ default: false })
   isEmailVerified!: boolean;

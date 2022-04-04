@@ -1,10 +1,9 @@
-const allRoles = {
+export const roleRights = {
   user: [],
   admin: ['getUsers', 'manageUsers'],
 } as const;
 
-export type Roles = keyof typeof allRoles;
-export type Permissions = typeof allRoles[keyof typeof allRoles][number];
+export const roles = Object.keys(roleRights) as Role[];
 
-export const roles = Object.keys(allRoles) as Roles[];
-export const roleRights = new Map<Roles, Permissions>(Object.entries(allRoles));
+export type Role = keyof typeof roleRights;
+export type Permission = typeof roleRights[keyof typeof roleRights][number];

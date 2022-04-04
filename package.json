@@ -78,6 +78,7 @@
     "zod": "^3.9.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.1.2",
     "@jest/globals": "^27.2.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/compression": "^1.7.2",
@@ -90,6 +91,7 @@
     "@types/morgan": "^1.9.3",
     "@types/nodemailer": "^6.4.4",
     "@types/passport-jwt": "^3.0.6",
+    "@types/supertest": "^2.0.12",
     "@types/validator": "^13.7.2",
     "coveralls": "^3.0.7",
     "eslint": "^7.32.0",
@@ -99,7 +101,6 @@
     "eslint-plugin-jest": "^24.4.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-security": "^1.4.0",
-    "faker": "^5.1.0",
     "husky": "^7.0.1",
     "jest": "^27.0.0",
     "lint-staged": "^11.1.2",

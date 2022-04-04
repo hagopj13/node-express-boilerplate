@@ -1,4 +1,4 @@
-import faker from 'faker';
+import {faker} from '@faker-js/faker';
 import { User } from '../../../src/models/user.model';
 
 describe('User model', () => {

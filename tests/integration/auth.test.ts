@@ -1,5 +1,5 @@
 import request from 'supertest';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import httpStatus from 'http-status';
 import httpMocks from 'node-mocks-http';
 import moment from 'moment';
@@ -15,7 +15,7 @@ import { User } from '../../src/models/user.model';
 import { Token } from '../../src/models/token.model';
 import { roleRights } from '../../src/config/roles';
 import { tokenTypes } from '../../src/config/tokens';
-import { userOne, admin, insertUsers } from '../fixtures/user.fixture';
+import { userOne, admin, insertUsers, MockUser } from '../fixtures/user.fixture';
 import { userOneAccessToken, adminAccessToken } from '../fixtures/token.fixture';
 import { jest } from '@jest/globals';
 
@@ -23,7 +23,7 @@ setupTestDB();
 
 describe('Auth routes', () => {
   describe('POST /v1/auth/register', () => {
-    let newUser;
+    let newUser: MockUser;
     beforeEach(() => {
       newUser = {
         name: faker.name.findName(),
@@ -46,6 +46,8 @@ describe('Auth routes', () => {
 
       const dbUser = await User.findById(res.body.user.id);
       expect(dbUser).toBeDefined();
+      if (!dbUser) return;
+
       expect(dbUser.password).not.toBe(newUser.password);
       expect(dbUser).toMatchObject({ name: newUser.name, email: newUser.email, role: 'user', isEmailVerified: false });
 
@@ -281,6 +283,8 @@ describe('Auth routes', () => {
         .expect(httpStatus.NO_CONTENT);
 
       const dbUser = await User.findById(userOne._id);
+      expect(dbUser).toBeDefined();
+      if (!dbUser) return;
       const isPasswordMatch = await bcrypt.compare('password2', dbUser.password);
       expect(isPasswordMatch).toBe(true);
 
@@ -404,7 +408,8 @@ describe('Auth routes', () => {
         .expect(httpStatus.NO_CONTENT);
 
       const dbUser = await User.findById(userOne._id);
-
+      expect(dbUser).toBeDefined();
+      if (!dbUser) return;
       expect(dbUser.isEmailVerified).toBe(true);
 
       const dbVerifyEmailToken = await Token.countDocuments({
@@ -604,6 +609,6 @@ describe('Auth middleware', () => {
       params: { userId: userOne._id.toHexString() },
     });
 
-    await auth(req, ...roleRights.get('admin')!);
+    await auth(req, ...roleRights.admin);
   });
 });

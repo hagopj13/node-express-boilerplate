@@ -16,7 +16,7 @@ import { UserModel } from '../models/user.model';
  * @param {string} [secret]
  * @returns {string}
  */
-export const generateToken = (userId: string, expires: Moment, type: string, secret = config.jwt.secret) => {
+export const generateToken = (userId: string, expires: Moment, type?: string, secret = config.jwt.secret) => {
   const payload = {
     sub: userId,
     iat: moment().unix(),
@@ -35,7 +35,7 @@ export const generateToken = (userId: string, expires: Moment, type: string, sec
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
-export const saveToken = async (token: string, userId: string, expires: Moment, type: string, blacklisted = false) => {
+export const saveToken = async (token: string, userId: string, expires: Moment, type?: string, blacklisted = false) => {
   const tokenDoc = await Token.create({
     token,
     user: userId,

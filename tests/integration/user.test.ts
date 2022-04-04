@@ -1,17 +1,17 @@
 import request from 'supertest';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import httpStatus from 'http-status';
 import { app } from '../../src/app';
 import { setupTestDB } from '../utils/setupTestDB';
 import { User } from '../../src/models/user.model';
-import { userOne, userTwo, admin, insertUsers } from '../fixtures/user.fixture';
+import { userOne, userTwo, admin, insertUsers, MockUser } from '../fixtures/user.fixture';
 import { userOneAccessToken, adminAccessToken } from '../fixtures/token.fixture';
 
 setupTestDB();
 
 describe('User routes', () => {
   describe('POST /v1/users', () => {
-    let newUser;
+    let newUser: MockUser;
 
     beforeEach(() => {
       newUser = {
@@ -42,6 +42,8 @@ describe('User routes', () => {
 
       const dbUser = await User.findById(res.body.id);
       expect(dbUser).toBeDefined();
+      if (!dbUser) return;
+
       expect(dbUser.password).not.toBe(newUser.password);
       expect(dbUser).toMatchObject({ name: newUser.name, email: newUser.email, role: newUser.role, isEmailVerified: false });
     });
@@ -59,6 +61,8 @@ describe('User routes', () => {
       expect(res.body.role).toBe('admin');
 
       const dbUser = await User.findById(res.body.id);
+      expect(dbUser).toBeDefined();
+      if (!dbUser) return;
       expect(dbUser.role).toBe('admin');
     });
 
@@ -130,7 +134,7 @@ describe('User routes', () => {
 
     test('should return 400 error if role is neither user nor admin', async () => {
       await insertUsers([admin]);
-      newUser.role = 'invalid';
+      (newUser as any).role = 'invalid';
 
       await request(app)
         .post('/v1/users')
@@ -292,10 +296,10 @@ describe('User routes', () => {
       expect(res.body.results).toHaveLength(3);
 
       const expectedOrder = [userOne, userTwo, admin].sort((a, b) => {
-        if (a.role < b.role) {
+        if (a.role! < b.role!) {
           return 1;
         }
-        if (a.role > b.role) {
+        if (a.role! > b.role!) {
           return -1;
         }
         return a.name < b.name ? -1 : 1;
@@ -504,6 +508,7 @@ describe('User routes', () => {
 
       const dbUser = await User.findById(userOne._id);
       expect(dbUser).toBeDefined();
+      if (!dbUser) return;
       expect(dbUser.password).not.toBe(updateBody.password);
       expect(dbUser).toMatchObject({ name: updateBody.name, email: updateBody.email, role: 'user' });
     });
