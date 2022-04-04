@@ -5,7 +5,7 @@ import { logger } from '../config/logger';
 import { ApiError } from '../utils/ApiError';
 import { NextFunction, Request, Response } from 'express';
 
-export const errorConverter = (err, req, res, next) => {
+export const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = err;
   if (!(error instanceof ApiError)) {
     const statusCode =
@@ -21,7 +21,7 @@ export const errorHandler = (err: ApiError, req: Request, res: Response, next?: 
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-    message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
+    message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR as 500];
   }
 
   res.locals.errorMessage = err.message;

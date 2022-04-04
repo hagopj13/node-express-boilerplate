@@ -1,5 +1,4 @@
 import httpStatus from 'http-status';
-import { pick } from '../utils/pick';
 import { ApiError } from '../utils/ApiError';
 import { catchAsync } from '../utils/catchAsync';
 import * as userService from '../services/user.service';
@@ -16,8 +15,10 @@ export const createUser = catchAsync(async (req, res) => {
 export const getUsers = catchAsync(async (req, res) => {
   await auth(req, 'getUsers');
   const { query } = userValidation.getUsers.parse(req);
-  const filter = pick(query, ['name', 'role'] as const);
-  const options = pick(query, ['sortBy', 'limit', 'page'] as const);
+
+  const filter = { name: query.name, role: query.role };
+  const options = { sortBy: query.sortBy, limit: query.limit, page: query.page };
+
   const result = await userService.queryUsers(filter, options);
   res.send(result);
 });

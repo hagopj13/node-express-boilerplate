@@ -1,6 +1,5 @@
 import express from 'express';
 import helmet from 'helmet';
-import xss from 'xss-clean';
 import mongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression';
 import cors from 'cors';
@@ -13,6 +12,7 @@ import { authLimiter } from './middlewares/rateLimiter';
 import { routes } from './routes/v1';
 import { errorConverter, errorHandler } from './middlewares/error';
 import { ApiError } from './utils/ApiError';
+const xss = require('xss-clean');
 
 export const app = express();
 

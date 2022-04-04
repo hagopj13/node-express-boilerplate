@@ -2,8 +2,9 @@ import mongoose from 'mongoose';
 import { app } from './app';
 import { config } from './config/config';
 import { logger } from './config/logger';
+import type {Server} from "http"
 
-let server;
+let server: Server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
   server = app.listen(config.port, () => {
@@ -22,7 +23,7 @@ const exitHandler = () => {
   }
 };
 
-const unexpectedErrorHandler = (error) => {
+const unexpectedErrorHandler = (error: Error) => {
   logger.error(error);
   exitHandler();
 };

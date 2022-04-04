@@ -49,6 +49,13 @@ export const paginate = (schema: any) => {
     const page = options.page && options.page > 0 ? options.page : 1;
     const skip = (page - 1) * limit;
 
+    // mongoose does not like undefined values
+    for (let key in filter) {
+      if (filter[key] === undefined) {
+        delete filter[key]
+      }
+    }
+
     const countPromise = this.countDocuments(filter).exec();
     let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit);
 

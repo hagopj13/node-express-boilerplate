@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { ConnectOptions } from 'mongoose';
 import path from 'path';
 import { z } from 'zod';
 
@@ -56,7 +57,7 @@ export const config = {
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    },
+    } as ConnectOptions,
   },
   jwt: {
     secret: envVars.JWT_SECRET,
