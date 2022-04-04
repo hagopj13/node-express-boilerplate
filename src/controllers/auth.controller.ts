@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { auth2 } from '../middlewares/auth';
+import { auth } from '../middlewares/auth';
 import * as authService from '../services/auth.service';
 import * as emailService from '../services/email.service';
 import * as tokenService from '../services/token.service';
@@ -49,7 +49,7 @@ export const resetPassword = catchAsync(async (req, res) => {
 });
 
 export const sendVerificationEmail = catchAsync(async (req, res) => {
-  const user = await auth2(req);
+  const user = await auth(req);
   const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   await emailService.sendVerificationEmail(user.email, verifyEmailToken);
   res.status(httpStatus.NO_CONTENT).send();
