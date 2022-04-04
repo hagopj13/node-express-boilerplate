@@ -50,7 +50,7 @@ try {
   if (err.code === 'EEXIST') {
     console.log('Directory already exists. Please choose another name for the project.');
   } else {
-    console.log(error);
+    console.log(err);
   }
   process.exit(1);
 }
