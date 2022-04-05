@@ -1,3 +1,4 @@
+import { ModelType } from "@typegoose/typegoose/lib/types";
 import { Document } from "mongoose";
 
 /* eslint-disable no-param-reassign */
@@ -30,6 +31,7 @@ export const paginate = (schema: any) => {
    * @returns {Promise<QueryResult>}
    */
   async function paginate(
+    this: ModelType<any>,
     filter: PaginateFilter,
     options: PaginateOptions
   ) {
@@ -57,22 +59,24 @@ export const paginate = (schema: any) => {
     }
 
     const countPromise = this.countDocuments(filter).exec();
-    let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit);
+    let docsQuery = this.find(filter).sort(sort).skip(skip).limit(limit);
 
     if (options.populate) {
       options.populate.split(',').forEach((populateOption) => {
-        docsPromise = docsPromise.populate(
-          populateOption
-            .split('.')
-            .reverse()
-            .reduce((a, b) => ({ path: b, populate: a }))
-        );
+        type Populate = {
+          path: string,
+          populate: string | Populate,
+        }
+        let arr = populateOption
+        .split('.')
+        .reverse()
+        .reduce((a, b) => ({ path: b, populate: a }), undefined as unknown as any) as Populate
+
+        docsQuery = docsQuery.populate(arr)
       });
     }
 
-    docsPromise = docsPromise.exec();
-
-    const values = await Promise.all([countPromise, docsPromise]);
+    const values = await Promise.all([countPromise, docsQuery.exec()]);
     const [totalResults, results] = values;
     const totalPages = Math.ceil(totalResults / limit);
     const result = {
