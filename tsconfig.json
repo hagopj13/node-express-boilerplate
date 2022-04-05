@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "ESNext",
+        "lib": ["ESNext"],
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "inlineSourceMap": true,
+        "module": "CommonJS",
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strict": true,
+        "noImplicitAny": true, 
+        "noEmit": true,
+    },
+    "ts-node": {
+        "transpileOnly": true,
+    },
+    "include": ["./src/**/*", "./tests/**/*"]
+} 
