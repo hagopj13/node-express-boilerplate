@@ -1,37 +1,43 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { setupTestDB } from '../../../utils/setupTestDB';
 import { paginate } from '../../../../src/models/plugins/paginate.plugin';
+import { ReturnModelType, getModelForClass, plugin, prop, Ref, DocumentType } from '@typegoose/typegoose';
 
-const projectSchema = new mongoose.Schema({
-  name: {
-    type: String,
+
+let Task: ReturnModelType<typeof TaskClass>;
+let Project: ReturnModelType<typeof ProjectClass>;
+@plugin(paginate)
+class ProjectClass {
+  public static paginate: ReturnType<typeof paginate>;
+
+  @prop({ required: true })
+  public name!: string;
+
+  @prop({
+    ref: () => TaskClass,
+    foreignField: 'project',
+    localField: '_id'
+  })
+  public tasks!: Ref<TaskClass>[];
+}
+
+@plugin(paginate)
+class TaskClass {
+  public static paginate: ReturnType<typeof paginate>;
+
+  @prop({ required: true })
+  public name!: string;
+
+  @prop({ 
     required: true,
-  },
-});
-
-projectSchema.virtual('tasks', {
-  ref: 'Task',
-  localField: '_id',
-  foreignField: 'project',
-});
-
-projectSchema.plugin(paginate);
-const Project = mongoose.model('Project', projectSchema);
-
-const taskSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  project: {
+    ref: () => ProjectClass,
     type: mongoose.SchemaTypes.ObjectId,
-    ref: 'Project',
-    required: true,
-  },
-});
+  })
+  public project!: Ref<ProjectClass>;
+}
 
-taskSchema.plugin(paginate);
-const Task = mongoose.model('Task', taskSchema);
+Task = getModelForClass(TaskClass, { schemaOptions: { timestamps: true } }) 
+Project = getModelForClass(ProjectClass, { schemaOptions: { timestamps: true } }) 
 
 setupTestDB();
 
