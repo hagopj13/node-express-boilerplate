@@ -1,9 +1,10 @@
 import {faker} from '@faker-js/faker';
 import { User } from '../../../src/models/user.model';
+import { MockUser } from '../../fixtures/user.fixture';
 
 describe('User model', () => {
   describe('User validation', () => {
-    let newUser;
+    let newUser: MockUser;
     beforeEach(() => {
       newUser = {
         name: faker.name.findName(),
@@ -38,7 +39,7 @@ describe('User model', () => {
     });
 
     test('should throw a validation error if role is unknown', async () => {
-      newUser.role = 'invalid';
+      newUser.role = 'invalid' as unknown as any;
       await expect(new User(newUser).validate()).rejects.toThrow();
     });
   });

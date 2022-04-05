@@ -18,6 +18,7 @@ import { tokenTypes } from '../../src/config/tokens';
 import { userOne, admin, insertUsers, MockUser } from '../fixtures/user.fixture';
 import { userOneAccessToken, adminAccessToken } from '../fixtures/token.fixture';
 import { jest } from '@jest/globals';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 setupTestDB();
 
@@ -241,7 +242,7 @@ describe('Auth routes', () => {
 
   describe('POST /v1/auth/forgot-password', () => {
     beforeEach(() => {
-      jest.spyOn(emailService.transport, 'sendMail').mockResolvedValue();
+      jest.spyOn(emailService.transport, 'sendMail').mockResolvedValue({} as SMTPTransport.SentMessageInfo);
     });
 
     test('should return 204 and send reset password email to the user', async () => {
@@ -366,7 +367,7 @@ describe('Auth routes', () => {
 
   describe('POST /v1/auth/send-verification-email', () => {
     beforeEach(() => {
-      jest.spyOn(emailService.transport, 'sendMail').mockResolvedValue();
+      jest.spyOn(emailService.transport, 'sendMail').mockResolvedValue({} as SMTPTransport.SentMessageInfo);
     });
 
     test('should return 204 and send verification email to the user', async () => {

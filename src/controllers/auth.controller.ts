@@ -43,8 +43,8 @@ export const forgotPassword = catchAsync(async (req, res) => {
 });
 
 export const resetPassword = catchAsync(async (req, res) => {
-  const { body } = authValidation.resetPassword.parse(req);
-  await authService.resetPassword(req.query.token, req.body.password);
+  const { body, query } = authValidation.resetPassword.parse(req);
+  await authService.resetPassword(query.token, req.body.password);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
