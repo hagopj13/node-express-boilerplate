@@ -61,4 +61,13 @@ module.exports = {
     },
     from: envVars.EMAIL_FROM,
   },
+  folder: {
+    public: envVars.FOLDER_PUBLIC,
+  },
+  file: {
+    maxUploadSize: Number(envVars.MAX_UPLOAD_FILE_SIZE),
+    prependUploadFilenameMethod: envVars.PREPEND_UPLOAD_FILE_NAME_METHOD,
+    randomStringLength: Number(envVars.PREPEND_UPLOAD_FILE_NAME_RANDOM_STRING_LENGTH),
+    allowUploadFileType: envVars.ALLOW_UPLOAD_FILE_TYPE,
+  },  
 };
