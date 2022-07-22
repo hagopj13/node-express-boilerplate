@@ -3,10 +3,16 @@ const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 const auth = require('../../middlewares/auth');
+const imageUpload = require('../../middlewares/upload');
 
 const router = express.Router();
 
+// Register
 router.post('/register', validate(authValidation.register), authController.register);
+
+// Verify-otp
+router.post('/verify-otp', validate(authValidation.verifyotp), authController.verifyotp);
+
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
@@ -14,6 +20,15 @@ router.post('/forgot-password', validate(authValidation.forgotPassword), authCon
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
+
+// User data update
+router.put('/:userId', imageUpload.single('userImage'), validate(authValidation.updateuser), authController.updateuser);
+
+// All Patient List
+router.route('/userList').get(validate(authValidation.userList), authController.userList);
+
+// Delete user (Soft delete)
+router.route('/:userId').delete(validate(authValidation.deleteUser), authController.deleteUser);
 
 module.exports = router;
 

@@ -23,7 +23,7 @@ const createUser = async (userBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (filter, options) => {
+const userList = async (filter, options) => {
   const users = await User.paginate(filter, options);
   return users;
 };
@@ -71,19 +71,47 @@ const updateUserById = async (userId, updateBody) => {
  * @returns {Promise<User>}
  */
 const deleteUserById = async (userId) => {
-  const user = await getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  await user.remove();
-  return user;
+  return User.findByIdAndUpdate(
+    { _id: userId },
+    {
+      $set: {
+        deletedAt: new Date(),
+      },
+    },
+    {
+      new: true,
+    }
+  );
 };
+
+// Get user by Mobile No
+const getUserByMobileNo = async (mobile_no) => {
+  return User.findOne({ mobile_no });
+};
+
+const ExistUser = async (id) => {
+  return User.findOne({ _id: id });
+};
+
+/**
+ * 
+ * @param {import('mongoose').ObjectId} id 
+ * @param {Object} data 
+ * @returns 
+ */
+const updateuser = async (id, data) => {
+  return User.findOneAndUpdate({ _id: id }, { $set: { ...data } }, { new: true })
+}
+
 
 module.exports = {
   createUser,
-  queryUsers,
+  userList,
   getUserById,
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  getUserByMobileNo,
+  ExistUser,
+  updateuser
 };
