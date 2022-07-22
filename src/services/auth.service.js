@@ -16,7 +16,8 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
-  return user;
+  const updateUser = await userService.updateUserById(user.id, { isEmailVerified: true });
+  return updateUser;
 };
 
 /**
@@ -90,10 +91,44 @@ const verifyEmail = async (verifyEmailToken) => {
   }
 };
 
+
+/**
+ * Verify email
+ * @param {string} verifymobileNoToken
+ * @returns {Promise}
+ */
+const verifmobile_no = async (verifymobileNoToken) => {
+  try {
+    const verifyMobile_noTokenDoc = await tokenService.verifyotp(verifymobileNoToken, tokenTypes.VERIFY_OTP);
+
+    const user = await userService.getUserById(verifyMobile_noTokenDoc.user);
+
+    const tokenOTP = await Token.findOne({ token: verifymobileNoToken });
+
+    const otpcreatetime = tokenOTP.updatedAt;
+
+    const currentOtptime = new Date();
+
+    const differenceTime = (currentOtptime - otpcreatetime) / 60000;
+
+    if (differenceTime < 5) {
+
+      await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_OTP });
+
+      return await userService.updateUserById(user.id, { isMobileNoVerified: true });
+    } else {
+      throw new ApiError(httpStatus.NOT_FOUND, 'your otp is expire');
+    }
+  } catch (error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, error);
+  }
+};
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
   refreshAuth,
   resetPassword,
   verifyEmail,
+  verifmobile_no
 };

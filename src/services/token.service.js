@@ -25,6 +25,11 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   return jwt.sign(payload, secret);
 };
 
+const generateOtp = () => {
+  const otp = ('0'.repeat(6) + Math.floor(Math.random() * 10 ** 6)).slice(-6);
+  return otp;
+};
+
 /**
  * Save a token
  * @param {string} token
@@ -60,12 +65,23 @@ const verifyToken = async (token, type) => {
   return tokenDoc;
 };
 
+const verifyotp = async (otp, type) => {
+  const mobile_noOtp = await Token.findOne({ token: otp, type });
+  if (!mobile_noOtp) {
+    throw new Error('Please Enter valid OTP');
+  }
+  return mobile_noOtp;
+};
+
 /**
  * Generate auth tokens
  * @param {User} user
  * @returns {Promise<Object>}
  */
 const generateAuthTokens = async (user) => {
+  if (!user) {
+    throw new Error('User not found');
+  }
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
@@ -109,15 +125,30 @@ const generateResetPasswordToken = async (email) => {
 const generateVerifyEmailToken = async (user) => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
-  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_OTP);
   return verifyEmailToken;
+};
+
+/**
+ * Generate verify email token
+ * @param {User} user
+ * @returns {Promise<string>}
+ */
+const generateVerifyOtp = async (user) => {
+  const expires = moment().add(config.jwt.verifyOtpExpirationMinutes, 'minutes');
+  const generateOtps = generateOtp();
+  await saveToken(generateOtps, user.id, expires, tokenTypes.VERIFY_OTP);
+  return generateOtps;
 };
 
 module.exports = {
   generateToken,
+  generateOtp,
   saveToken,
   verifyToken,
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken,
+  generateVerifyOtp,
+  verifyotp
 };

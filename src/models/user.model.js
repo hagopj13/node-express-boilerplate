@@ -6,11 +6,15 @@ const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+    first_name: {
       type: String,
-      required: true,
       trim: true,
     },
+    last_name: {
+      type: String,
+      trim: true,
+    },
+
     email: {
       type: String,
       required: true,
@@ -35,6 +39,13 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
+    mobile_no: {
+      type: Number,
+      required: true,
+      minlength: 10,
+      maxlength: 10,
+      trim: true,
+    },
     role: {
       type: String,
       enum: roles,
@@ -43,6 +54,22 @@ const userSchema = mongoose.Schema(
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    isMobileNoVerified: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    address: {
+      type: String,
+      default: null,
+    },
+    userImage: {
+      type: String,
+      trim: true,
     },
   },
   {
@@ -82,6 +109,7 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+
 
 /**
  * @typedef User
