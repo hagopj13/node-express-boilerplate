@@ -13,6 +13,8 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const fs = require('fs');
+const publicFolderPath = process.cwd() + '/public';
 
 const app = express();
 
@@ -63,5 +65,10 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
+// create the public folder for uploading file
+if (!fs.existsSync(publicFolderPath)) {
+  fs.mkdirSync(publicFolderPath);
+}
 
 module.exports = app;

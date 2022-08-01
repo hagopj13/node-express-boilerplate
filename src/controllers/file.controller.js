@@ -23,7 +23,7 @@ const upload = catchAsync(async (req, res, next) => {
         res.status(httpStatus.BAD_REQUEST).send(message);
       } else {
         // An unknown error occurred when uploading.
-        res.status(err.statusCode).send(err.message);
+        res.status(err.statusCode?err.statusCode:httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
       }      
     }
   });
