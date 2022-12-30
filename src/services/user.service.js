@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 /**
  * Create a user
@@ -45,6 +48,29 @@ const getUserById = async (id) => {
 const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
+const getUserByGoogleCredential = async (credential) => {
+  const ticket = await client.verifyIdToken({
+    idToken: credential,
+  });
+  const payload = ticket.getPayload();
+  console.log(payload);
+  let user;
+  try {
+    const userBody = {
+      firstName: payload.given_name,
+      lastName: payload.family_name,
+      email: payload.email,
+      password: Math.random().toString(36).slice(-8),
+      role: 'user',
+    };
+    user = await createUser(userBody);
+  } catch (err) {
+    console.log(err);
+    user = await getUserByEmail(payload.email);
+    console.log('USER', user);
+  }
+  return user;
+};
 
 /**
  * Update user by id
@@ -84,6 +110,7 @@ module.exports = {
   queryUsers,
   getUserById,
   getUserByEmail,
+  getUserByGoogleCredential,
   updateUserById,
   deleteUserById,
 };
