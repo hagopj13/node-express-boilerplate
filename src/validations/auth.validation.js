@@ -15,6 +15,7 @@ const login = {
     password: Joi.string().required(),
   }),
 };
+
 const googleLogin = {
   body: Joi.object().keys({
     credential: Joi.string().required(),
