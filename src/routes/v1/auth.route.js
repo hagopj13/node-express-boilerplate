@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
+router.post('/login-google', validate(authValidation.googleLogin), authController.googleLogin);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
@@ -118,6 +119,49 @@ module.exports = router;
  *             example:
  *               code: 401
  *               message: Invalid email or password
+ */
+
+/**
+ * @swagger
+ * /auth/login-google:
+ *   post:
+ *     summary: Google Login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - credential
+ *             properties:
+ *               credential:
+ *                 type: string
+ *                 format: string
+ *             example:
+ *               credential: eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2NzIzNjA1ODgsImF1ZCI6IjI3NDAzMzUxMTY4OC0wbW44M3VkbThsYXZwMjgwa2tsczhycW8wZnJoamJtZS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwNjYwMTg0MTgwMzYwNDQwMzEzNyIsImVtYWlsIjoiRG91Z2llbGVkQGhvdG1haWwuY28udWsiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjc0MDMzNTExNjg4LTBtbjgzdWRtOGxhdnAyODBra2xzOHJxbzBmcmhqYm1lLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6IlJ5YW4gRG91Z2FuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FFZEZUcDRXcE5FZmpOd2xiaXBHWG1PR29fZWRnUFUwU05vcVdUUVA3ZWFRPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlJ5YW4iLCJmYW1pbHlfbmFtZSI6IkRvdWdhbiIsImlhdCI6MTY3MjM2MDg4OCwiZXhwIjoxNjcyMzY0NDg4LCJqdGkiOiJjMjhhNWMyMzUwM2JiNTM3YWRiNWY3NWFjYmFjMzY5ZDc5NDIwMTAzIn0
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         description: Invalid email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Invalid credential
  */
 
 /**

@@ -20,6 +20,19 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 };
 
 /**
+ * Login with google credential
+ * @param {string} credential
+ * @returns {Promise<User>}
+ */
+const loginUserWithGoogle = async (credential) => {
+  const user = await userService.getUserByGoogleCredential(credential);
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid credential');
+  }
+  return user;
+};
+
+/**
  * Logout
  * @param {string} refreshToken
  * @returns {Promise}
@@ -92,6 +105,7 @@ const verifyEmail = async (verifyEmailToken) => {
 
 module.exports = {
   loginUserWithEmailAndPassword,
+  loginUserWithGoogle,
   logout,
   refreshAuth,
   resetPassword,
