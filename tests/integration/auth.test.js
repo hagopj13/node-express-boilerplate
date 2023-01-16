@@ -23,7 +23,7 @@ describe('Auth routes', () => {
     let newUser;
     beforeEach(() => {
       newUser = {
-        name: faker.name.findName(),
+        name: faker.name.fullName(),
         email: faker.internet.email().toLowerCase(),
         password: 'password1',
       };
