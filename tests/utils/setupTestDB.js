@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const config = require('../../src/config/config');
 
+// Mongoose Strict Query Deprecation Warning suppression
+mongoose.set('strictQuery', false);
+
 const setupTestDB = () => {
   beforeAll(async () => {
     await mongoose.connect(config.mongoose.url, config.mongoose.options);
