@@ -3,6 +3,9 @@ const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
 
+// Mongoose Strict Query Deprecation Warning suppression
+mongoose.set('strictQuery', false);
+
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
