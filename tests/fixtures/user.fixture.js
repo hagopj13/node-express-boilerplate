@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const User = require('../../src/models/user.model');
 
 const password = 'password1';

@@ -1,4 +1,4 @@
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const { User } = require('../../../src/models');
 
 describe('User model', () => {
