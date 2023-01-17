@@ -1,0 +1,31 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ env.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo "${{ env.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+
+    - name: Deploy
+      run: |
+        ssh ${{ env.SSH_USER }}@${{ env.SSH_KNOWN_HOSTS }}
+        cd /var/www/html/csm-api-dev
+        ls -la
+        exit
