@@ -46,7 +46,10 @@ const verifyEmail = catchAsync(async (req, res) => {
   await authService.verifyEmail(req.query.token);
   res.status(httpStatus.NO_CONTENT).send();
 });
-
+const googleAuth = async (req, res) => {
+  const tokens = await tokenService.generateAuthTokens(req.user);
+  res.status(httpStatus.OK).send(tokens);
+};
 module.exports = {
   register,
   login,
@@ -56,4 +59,5 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+  googleAuth,
 };
