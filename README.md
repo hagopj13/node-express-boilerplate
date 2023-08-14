@@ -170,6 +170,10 @@ SMTP_PORT=587
 SMTP_USERNAME=email-server-username
 SMTP_PASSWORD=email-server-password
 EMAIL_FROM=support@yourapp.com
+
+# API Documentation
+API_DOC_USER_NAME=username
+API_DOC_PASSWORD=password
 ```
 
 ## Project Structure
