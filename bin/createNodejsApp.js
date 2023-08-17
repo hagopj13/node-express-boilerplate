@@ -3,6 +3,7 @@ const util = require('util');
 const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
+const prompt = require("prompt-sync")({ sigint: true });
 
 // Utility functions
 const exec = util.promisify(require('child_process').exec);
@@ -27,19 +28,26 @@ async function hasYarn() {
   }
 }
 
-// Validate arguments
+//If no target directory specified, Ask for one
+var folderName;
 if (process.argv.length < 3) {
-  console.log('Please specify the target project directory.');
-  console.log('For example:');
-  console.log('    npx create-nodejs-app my-app');
-  console.log('    OR');
-  console.log('    npm init nodejs-app my-app');
-  process.exit(1);
+  folderName = prompt("What name would you like to give your app? ");
+  folderName = scrubFolderName(folderName);
+  console.log(`Creating ${folderName}`);
+} else {
+  folderName = process.argv[2];
+}
+
+//Scrub the Folder name given by users to avoid special characters and spaces
+function scrubFolderName(name) {
+  name = name.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+  name = name.replace(/\s/g, '');
+  name = name.substring(0,25);
+  return name;
 }
 
 // Define constants
 const ownPath = process.cwd();
-const folderName = process.argv[2];
 const appPath = path.join(ownPath, folderName);
 const repo = 'https://github.com/hagopj13/node-express-boilerplate.git';
 
