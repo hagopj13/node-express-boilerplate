@@ -20,6 +20,8 @@ const envVarsSchema = Joi.object()
       .description('minutes after which verify email token expires'),
     SMTP_HOST: Joi.string().description('server that will send the emails'),
     SMTP_PORT: Joi.number().description('port to connect to the email server'),
+    SMTP_SECURE: Joi.boolean().description('Use TLS or upgrade later with STARTTLS'),
+    SMTP_REJECT_SELFSIGNED_CERTS: Joi.boolean().description('Accept or Reject self-signed certificates.'),
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
@@ -54,9 +56,13 @@ module.exports = {
     smtp: {
       host: envVars.SMTP_HOST,
       port: envVars.SMTP_PORT,
+      secure: envVars.SMTP_SECURE,
       auth: {
         user: envVars.SMTP_USERNAME,
         pass: envVars.SMTP_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: envVars.SMTP_REJECT_SELFSIGNED_CERTS,
       },
     },
     from: envVars.EMAIL_FROM,
