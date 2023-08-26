@@ -2,8 +2,14 @@ const passport = require('passport');
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { roleRights } = require('../config/roles');
+const logger = require('../config/logger');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
+  if (err && err.stack.includes('MongooseServerSelectionError')) {
+    logger.error(err);
+    return reject(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Internal server error'));
+  }
+
   if (err || info || !user) {
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
