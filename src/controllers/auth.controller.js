@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
+const { OAuth2Client } = require('google-auth-library');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -46,7 +49,36 @@ const verifyEmail = catchAsync(async (req, res) => {
   await authService.verifyEmail(req.query.token);
   res.status(httpStatus.NO_CONTENT).send();
 });
+const googleAuth = async (req, res) => {
+  const tokens = await tokenService.generateAuthTokens(req.user);
+  res.status(httpStatus.OK).send(tokens);
+};
 
+const googleTokenAuth = async (req, res) => {
+  const { idToken } = req.body;
+
+  const ticket = await client.verifyIdToken({
+    idToken,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+  const googleId = payload.sub;
+  const { email } = payload;
+
+  let user = await userService.getUserByGoogleId(googleId);
+
+  if (!user) {
+    user = await userService.createUser({
+      name: payload.name,
+      email,
+      googleId,
+    });
+  }
+
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.status(httpStatus.OK).send(tokens);
+};
 module.exports = {
   register,
   login,
@@ -56,4 +88,6 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+  googleAuth,
+  googleTokenAuth,
 };
