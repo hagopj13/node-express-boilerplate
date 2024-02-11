@@ -614,7 +614,7 @@
     log-driver "^1.2.7"
     semver "^5.5.0"
     shimmer "^1.2.0"
-    uuid "^3.2.1"
+    uuid "^8.3.0"
 
 "@opencensus/core@^0.0.8":
   version "0.0.8"
@@ -625,7 +625,7 @@
     log-driver "^1.2.7"
     semver "^5.5.0"
     shimmer "^1.2.0"
-    uuid "^3.2.1"
+    uuid "^8.3.0"
 
 "@opencensus/propagation-b3@0.0.8":
   version "0.0.8"
@@ -633,7 +633,7 @@
   integrity sha512-PffXX2AL8Sh0VHQ52jJC4u3T0H6wDK6N/4bg7xh4ngMYOIi13aR1kzVvX1sVDBgfGwDOkMbl4c54Xm3tlPx/+A==
   dependencies:
     "@opencensus/core" "^0.0.8"
-    uuid "^3.2.1"
+    uuid "^8.3.0"
 
 "@pm2/agent@~2.0.0":
   version "2.0.0"
@@ -5784,7 +5784,7 @@ request@^2.88.2:
     safe-buffer "^5.1.2"
     tough-cookie "~2.5.0"
     tunnel-agent "^0.6.0"
-    uuid "^3.3.2"
+    uuid "^8.3.0"
 
 require-at@^1.0.6:
   version "1.0.6"
@@ -6877,11 +6877,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-
-uuid@^3.2.1, uuid@^3.3.2:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
-  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 uuid@^8.3.0:
   version "8.3.2"
