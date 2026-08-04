@@ -6,6 +6,8 @@ const register = {
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
+    // create-nodejs-express-app: optional job title
+    jobTitle: Joi.string().max(30),
   }),
 };
 

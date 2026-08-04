@@ -10,6 +10,9 @@ components:
           format: email
         name:
           type: string
+        jobTitle:
+          type: string
+          maxLength: 30
         role:
           type: string
           enum: [user, admin]
@@ -17,6 +20,7 @@ components:
         id: 5ebac534954b54139806c112
         email: fake@example.com
         name: fake name
+        jobTitle: Software Engineer
         role: user
 
     Token:

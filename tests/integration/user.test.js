@@ -138,6 +138,41 @@ describe('User routes', () => {
         .send(newUser)
         .expect(httpStatus.BAD_REQUEST);
     });
+
+    // create-nodejs-express-app: optional job title
+    test('should return 201 and successfully create user with jobTitle', async () => {
+      await insertUsers([admin]);
+      newUser.jobTitle = 'Software Engineer';
+
+      const res = await request(app)
+        .post('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .send(newUser)
+        .expect(httpStatus.CREATED);
+
+      expect(res.body).toEqual({
+        id: expect.anything(),
+        name: newUser.name,
+        jobTitle: newUser.jobTitle,
+        email: newUser.email,
+        role: newUser.role,
+        isEmailVerified: false,
+      });
+
+      const dbUser = await User.findById(res.body.id);
+      expect(dbUser.jobTitle).toBe(newUser.jobTitle);
+    });
+
+    test('should return 400 error if jobTitle exceeds 30 characters', async () => {
+      await insertUsers([admin]);
+      newUser.jobTitle = 'a'.repeat(31);
+
+      await request(app)
+        .post('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .send(newUser)
+        .expect(httpStatus.BAD_REQUEST);
+    });
   });
 
   describe('GET /v1/users', () => {
@@ -161,6 +196,7 @@ describe('User routes', () => {
       expect(res.body.results[0]).toEqual({
         id: userOne._id.toHexString(),
         name: userOne.name,
+        jobTitle: userOne.jobTitle,
         email: userOne.email,
         role: userOne.role,
         isEmailVerified: userOne.isEmailVerified,
@@ -365,6 +401,7 @@ describe('User routes', () => {
         id: userOne._id.toHexString(),
         email: userOne.email,
         name: userOne.name,
+        jobTitle: userOne.jobTitle,
         role: userOne.role,
         isEmailVerified: userOne.isEmailVerified,
       });
@@ -506,6 +543,34 @@ describe('User routes', () => {
       expect(dbUser).toBeDefined();
       expect(dbUser.password).not.toBe(updateBody.password);
       expect(dbUser).toMatchObject({ name: updateBody.name, email: updateBody.email, role: 'user' });
+    });
+
+    // create-nodejs-express-app: optional job title
+    test('should return 200 and successfully update jobTitle', async () => {
+      await insertUsers([userOne]);
+      const updateBody = { jobTitle: 'Product Manager' };
+
+      const res = await request(app)
+        .patch(`/v1/users/${userOne._id}`)
+        .set('Authorization', `Bearer ${userOneAccessToken}`)
+        .send(updateBody)
+        .expect(httpStatus.OK);
+
+      expect(res.body.jobTitle).toBe(updateBody.jobTitle);
+
+      const dbUser = await User.findById(userOne._id);
+      expect(dbUser.jobTitle).toBe(updateBody.jobTitle);
+    });
+
+    test('should return 400 error if jobTitle exceeds 30 characters', async () => {
+      await insertUsers([userOne]);
+      const updateBody = { jobTitle: 'a'.repeat(31) };
+
+      await request(app)
+        .patch(`/v1/users/${userOne._id}`)
+        .set('Authorization', `Bearer ${userOneAccessToken}`)
+        .send(updateBody)
+        .expect(httpStatus.BAD_REQUEST);
     });
 
     test('should return 401 error if access token is missing', async () => {

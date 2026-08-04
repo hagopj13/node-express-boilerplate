@@ -52,6 +52,31 @@ describe('Auth routes', () => {
       });
     });
 
+    // create-nodejs-express-app: optional job title
+    test('should return 201 and successfully register user with jobTitle', async () => {
+      newUser.jobTitle = 'Software Engineer';
+
+      const res = await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.CREATED);
+
+      expect(res.body.user).toEqual({
+        id: expect.anything(),
+        name: newUser.name,
+        jobTitle: newUser.jobTitle,
+        email: newUser.email,
+        role: 'user',
+        isEmailVerified: false,
+      });
+
+      const dbUser = await User.findById(res.body.user.id);
+      expect(dbUser.jobTitle).toBe(newUser.jobTitle);
+    });
+
+    test('should return 400 error if jobTitle exceeds 30 characters', async () => {
+      newUser.jobTitle = 'a'.repeat(31);
+
+      await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.BAD_REQUEST);
+    });
+
     test('should return 400 error if email is invalid', async () => {
       newUser.email = 'invalidEmail';
 
@@ -95,6 +120,7 @@ describe('Auth routes', () => {
       expect(res.body.user).toEqual({
         id: expect.anything(),
         name: userOne.name,
+        jobTitle: userOne.jobTitle,
         email: userOne.email,
         role: userOne.role,
         isEmailVerified: userOne.isEmailVerified,
