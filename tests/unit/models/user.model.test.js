@@ -41,17 +41,6 @@ describe('User model', () => {
       newUser.role = 'invalid';
       await expect(new User(newUser).validate()).rejects.toThrow();
     });
-
-    // create-nodejs-express-app: optional job title
-    test('should correctly validate a user with jobTitle', async () => {
-      newUser.jobTitle = 'Software Engineer';
-      await expect(new User(newUser).validate()).resolves.toBeUndefined();
-    });
-
-    test('should throw a validation error if jobTitle exceeds 30 characters', async () => {
-      newUser.jobTitle = 'a'.repeat(31);
-      await expect(new User(newUser).validate()).rejects.toThrow();
-    });
   });
 
   describe('User toJSON()', () => {

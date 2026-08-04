@@ -10,8 +10,6 @@ const hashedPassword = bcrypt.hashSync(password, salt);
 const userOne = {
   _id: mongoose.Types.ObjectId(),
   name: faker.name.findName(),
-  // create-nodejs-express-app: optional job title
-  jobTitle: 'Software Engineer',
   email: faker.internet.email().toLowerCase(),
   password,
   role: 'user',

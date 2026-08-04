@@ -49,9 +49,6 @@ module.exports = router;
  *             properties:
  *               name:
  *                 type: string
- *               jobTitle:
- *                 type: string
- *                 maxLength: 30
  *               email:
  *                 type: string
  *                 format: email
@@ -66,7 +63,6 @@ module.exports = router;
  *                  enum: [user, admin]
  *             example:
  *               name: fake name
- *               jobTitle: Software Engineer
  *               email: fake@example.com
  *               password: password1
  *               role: user
@@ -202,9 +198,6 @@ module.exports = router;
  *             properties:
  *               name:
  *                 type: string
- *               jobTitle:
- *                 type: string
- *                 maxLength: 30
  *               email:
  *                 type: string
  *                 format: email
@@ -216,7 +209,6 @@ module.exports = router;
  *                 description: At least one number and one letter
  *             example:
  *               name: fake name
- *               jobTitle: Software Engineer
  *               email: fake@example.com
  *               password: password1
  *     responses:
