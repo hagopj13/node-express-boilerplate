@@ -11,6 +11,12 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    // create-nodejs-express-app: optional job title, max 40 characters
+    jobTitle: {
+      type: String,
+      trim: true,
+      maxlength: 40,
+    },
     email: {
       type: String,
       required: true,
