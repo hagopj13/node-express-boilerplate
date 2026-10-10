@@ -58,11 +58,33 @@ describe('Auth routes', () => {
       await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.BAD_REQUEST);
     });
 
+    test('should trim and lowercase email when registering', async () => {
+      newUser.email = '  NewUser@Example.COM  ';
+
+      const res = await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.CREATED);
+
+      expect(res.body.user.email).toBe('newuser@example.com');
+
+      const dbUser = await User.findById(res.body.user.id);
+      expect(dbUser).toBeDefined();
+      expect(dbUser.email).toBe('newuser@example.com');
+    });
+
     test('should return 400 error if email is already used', async () => {
       await insertUsers([userOne]);
       newUser.email = userOne.email;
 
       await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.BAD_REQUEST);
+    });
+
+    test('should return 400 error if registering the same email again in different case or padding', async () => {
+      newUser.email = 'newuser@example.com';
+      await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.CREATED);
+
+      newUser.email = '  NewUser@Example.COM  ';
+      const res = await request(app).post('/v1/auth/register').send(newUser).expect(httpStatus.BAD_REQUEST);
+
+      expect(res.body.message).toBe('Email already taken');
     });
 
     test('should return 400 error if password length is less than 8 characters', async () => {

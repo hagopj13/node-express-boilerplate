@@ -3,7 +3,7 @@ const { password } = require('./custom.validation');
 
 const register = {
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().required().trim().lowercase().email(),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
   }),
@@ -11,7 +11,7 @@ const register = {
 
 const login = {
   body: Joi.object().keys({
-    email: Joi.string().required(),
+    email: Joi.string().required().trim().lowercase().email(),
     password: Joi.string().required(),
   }),
 };
@@ -30,7 +30,7 @@ const refreshTokens = {
 
 const forgotPassword = {
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
+    email: Joi.string().trim().lowercase().email().required(),
   }),
 };
 

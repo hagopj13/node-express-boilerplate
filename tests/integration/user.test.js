@@ -62,6 +62,23 @@ describe('User routes', () => {
       expect(dbUser.role).toBe('admin');
     });
 
+    test('should trim and lowercase email when creating a user', async () => {
+      await insertUsers([admin]);
+      newUser.email = '  NewUser@Example.COM  ';
+
+      const res = await request(app)
+        .post('/v1/users')
+        .set('Authorization', `Bearer ${adminAccessToken}`)
+        .send(newUser)
+        .expect(httpStatus.CREATED);
+
+      expect(res.body.email).toBe('newuser@example.com');
+
+      const dbUser = await User.findById(res.body.id);
+      expect(dbUser).toBeDefined();
+      expect(dbUser.email).toBe('newuser@example.com');
+    });
+
     test('should return 401 error if access token is missing', async () => {
       await request(app).post('/v1/users').send(newUser).expect(httpStatus.UNAUTHORIZED);
     });
