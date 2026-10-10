@@ -170,7 +170,7 @@ describe('Auth routes', () => {
       await insertUsers([userOne]);
       const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
-      await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
+      const refreshTokenDoc = await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
 
       const res = await request(app).post('/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.OK);
 
@@ -181,6 +181,9 @@ describe('Auth routes', () => {
 
       const dbRefreshTokenDoc = await Token.findOne({ token: res.body.refresh.token });
       expect(dbRefreshTokenDoc).toMatchObject({ type: tokenTypes.REFRESH, user: userOne._id, blacklisted: false });
+
+      const dbOldRefreshTokenDoc = await Token.findById(refreshTokenDoc._id);
+      expect(dbOldRefreshTokenDoc).toBe(null);
 
       const dbRefreshTokenCount = await Token.countDocuments();
       expect(dbRefreshTokenCount).toBe(1);
