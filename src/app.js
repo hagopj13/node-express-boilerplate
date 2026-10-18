@@ -64,4 +64,8 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
+const requestId = require('./middlewares/requestId');
+app.use(requestId);
+
 module.exports = app;
+
