@@ -63,5 +63,6 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
-
+const responseTime = require('./middlewares/responseTime');
+app.use(responseTime);
 module.exports = app;
